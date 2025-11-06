@@ -21,7 +21,7 @@ const Layout = () => {
           </Typography>
 
           <Button color='inherit' component={Link} to='/' onClick={'/'} startIcon={<HomeIcon />} >
-            Home / New Quiz
+            Home
           </Button>
         </Toolbar>
       </AppBar>
