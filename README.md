@@ -18,5 +18,6 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## First thing to do
 
+cd into client
 run `npm install` in terminal to  install node_modules
 run `npm run dev` in terminal to run website
