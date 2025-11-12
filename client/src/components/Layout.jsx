@@ -9,8 +9,7 @@ import {
 import { AppBar, CssBaseline, Toolbar, Typography, Box, Button,
   Container, useTheme, IconButton } from "@mui/material"
 
-import {Home as HomeIcon,
-  Brightness4 as DarkModeIcon,
+import { Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon
 } from '@mui/icons-material'
 
@@ -20,7 +19,7 @@ import { ColorModeContext } from '../context/ColorModeContext'
 const Layout = () => {
   const { toggleColorMode, mode } = useContext(ColorModeContext)
   const theme = useTheme()
-  const isAuthenticated = true
+  const isAuthenticated = false
 
   return (
     <>

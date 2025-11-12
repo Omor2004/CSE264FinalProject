@@ -1,7 +1,8 @@
 import { Home as HomeIcon,
   Search as SearchIcon,
-  profile as ProfileIcon
- } from '@mui/icons-material'
+  Person as ProfileIcon,
+  Star,
+} from '@mui/icons-material'
 
 export const PUBLIC_NAVIGATION_LINKS = [
   {
@@ -17,6 +18,7 @@ export const PUBLIC_NAVIGATION_LINKS = [
   {
     name: 'My List',
     path: '/list',
+    icon: Star,
   },
 ]
 
@@ -29,6 +31,7 @@ export const AUTH_NAVIGATION_LINKS = [
   {
     name: 'My List',
     path: '/list',
+    icon: Star,
   }
 ]
 
