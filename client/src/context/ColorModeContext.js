@@ -1,5 +1,5 @@
-import React, { useState, useMemo, createContext, use } from 'react'
-import { createTheme } from '@mui/materia'
+import React, { useState, useMemo, createContext, useContext } from 'react'
+import { ThemeProvider } from '@mui/materia'
 import { createAnimeTheme } from '../theme/theme'
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} })
@@ -20,7 +20,9 @@ export const ColorModeProvider = ({ children }) => {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      {children}
+      <ThemeProvider theme={theme}>
+        {children}
+      </ThemeProvider>
     </ColorModeContext.Provider>
   )
 }
