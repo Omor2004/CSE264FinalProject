@@ -1,11 +1,8 @@
-import React, { useState, useMemo, createContext, useContext } from 'react'
+import React, { useState, useMemo, useContext } from 'react'
 import { ThemeProvider } from '@mui/material'
+import { ColorModeContext } from './ColorModeContext'
 import { createAnimeTheme } from '../theme/theme'
 
-export const ColorModeContext = createContext({
-  toggleColorMode: () => {},
-  mode: 'dark'
-})
 
 export const ColorModeProvider = ({ children }) => {
   const [mode, setMode] = useState('dark')

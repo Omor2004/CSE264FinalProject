@@ -1,8 +1,13 @@
 import React, { useContext } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
+import {
+  PUBLIC_NAVIGATION_LINKS,
+  AUTH_NAVIGATION_LINKS
+} from '../config/config'
+
 import { AppBar, CssBaseline, Toolbar, Typography, Box, Button,
-  Container, ThemeProvider, IconButton } from "@mui/material"
+  Container, useTheme, IconButton } from "@mui/material"
 
 import {Home as HomeIcon,
   Brightness4 as DarkModeIcon,
@@ -11,12 +16,20 @@ import {Home as HomeIcon,
 
 import { ColorModeContext } from '../context/ColorModeContext'
 
+
 const Layout = () => {
   const { toggleColorMode, mode } = useContext(ColorModeContext)
+  const theme = useTheme()
+  const isAuthenticated = true
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#f4f7f6' }}>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        backgroundColor: theme.palette.background.default
+      }}>
         <CssBaseline/>
         <AppBar position='sticky'>
           <Toolbar>
@@ -24,19 +37,50 @@ const Layout = () => {
               variant='h6'
               component={Link}
               to='/'
-              onClick={'/'}
-              sx={{ flexGrow: 1, fontWeight: 700, textDecoration: 'none', color: 'white' }}
+              sx={{ flexGrow: 1, fontWeight: 700, textDecoration: 'none', color: 'inherit' }}
             >
-
+              AnimePulse
             </Typography>
 
-            <Button color='inherit' component={Link} to='/' onClick={'/'} startIcon={<HomeIcon />} >
-              Home
-            </Button>
-
-            <IconButton sx={{ ml: 1}} onClick={toggleColorMode} color='inherit'>
-              {mode === 'dark' ? <LightModeIcon/> : <DarkModeIcon/>}
+            <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+              {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
+              
+            {PUBLIC_NAVIGATION_LINKS.map((link) => (
+                <Button 
+                  key={link.name} 
+                  color='inherit' 
+                  component={Link} 
+                  to={link.path} 
+                  startIcon={<link.icon />}
+                >
+                  {link.name}
+                </Button>
+            ))}
+              
+            {isAuthenticated ? (
+              AUTH_NAVIGATION_LINKS.map((link) => (
+                <Button 
+                  key={link.name} 
+                  color='inherit' 
+                  component={Link} 
+                  to={link.path} 
+                  startIcon={<link.icon />}
+                >
+                  {link.name}
+                </Button>
+              ))
+            ) : (
+              <>
+                <Button color='inherit' component={Link} to='/login'>
+                  Login
+                </Button>
+                <Button color='primary' variant="contained" component={Link} to='/signup' sx={{ ml: 1 }}>
+                  Sign Up
+                </Button>
+              </>
+            )}
+
           </Toolbar>
         </AppBar>
 
@@ -54,7 +98,7 @@ const Layout = () => {
           <Outlet />
         </Container>
 
-        <Box component='footer' sx={{ py: 3, bgcolor: 'grey.200', textAlign: 'center' }}>
+        <Box component='footer' sx={{ py: 3, bgcolor: 'background.paper', textAlign: 'center' }}>
 
         </Box>
       </Box>

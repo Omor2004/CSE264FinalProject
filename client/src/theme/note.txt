@@ -1,0 +1,2 @@
+Delete this file later***
+This folder manages pure style configuration (palette colors, typography, component overrides). It has no state or React hooks

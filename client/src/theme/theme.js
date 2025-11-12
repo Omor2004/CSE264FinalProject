@@ -64,7 +64,16 @@ const getDesignTokens = (mode) => ({
           backgroundColor: theme.palette.background.paper,
         }),
       }
-    }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          textTransform: 'none',
+          fontWeight: 600,
+        },
+      },
+    },
   },
 })
 
