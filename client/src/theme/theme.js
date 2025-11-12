@@ -29,7 +29,7 @@ const getDesignTokens = (mode) => ({
       ? {
           background: {
             default: customColors.lightBackground,
-            paper: '#ffffff',
+            paper: customColors.primaryMain,
           },
           text: {
             primary: customColors.darkBackground,
@@ -39,7 +39,7 @@ const getDesignTokens = (mode) => ({
       : {
           background: {
             default: customColors.darkBackground,
-            paper: customColors.darkSurface,
+            paper: customColors.primaryMain,
           },
           text: {
             primary: customColors.neutralGrey,
