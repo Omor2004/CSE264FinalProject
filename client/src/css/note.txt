@@ -1,0 +1,2 @@
+Delete this file later ***
+In case we need to create custom styles or create global styles

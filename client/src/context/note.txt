@@ -1,0 +1,6 @@
+Delete this file later***
+This folder manages state and state access throughout your application. Although it affects the theme, its primary job is managing the mode state and toggling function via React Context.
+
+examples of files that can be save here: 
+ColorModeContext.js, ColorModeProvider.jsx, useColorMode.js, AuthContext, ListContext, etc...
+
