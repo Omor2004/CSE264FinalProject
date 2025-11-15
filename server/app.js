@@ -23,6 +23,16 @@ app.get('/users', async (req, res) => {
   }
 })
 
+app.get('/usersAnimeList', async (req, res) => {
+  try {
+    const userAnimeList = await sql`SELECT * FROM users_anime_list`
+    res.json(userAnimeList)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to fetch users anime list' })
+  }
+})
+
 // to run API, use npm run dev
 app.listen(app.get('port'), () => {
     console.log("App is running at http://localhost:3000")
