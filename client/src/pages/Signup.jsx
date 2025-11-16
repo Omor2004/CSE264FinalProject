@@ -5,6 +5,7 @@ import { UserAuth } from "../context/AuthContext.jsx";
 const Signup = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("")
     const [error, setError] = useState("")
     const [loading, setLoading] = useState("")
     
@@ -16,14 +17,14 @@ const Signup = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            const result = await signUpNewUser(email, password)
+            const result = await signUpNewUser(email, password, username)
             if(result.success){
                 console.log("Sign up successful:", result.data)
                 navigate("/")
             }
         }catch (err) {
-            console.error("Sign up failed:", error)
-            setError(error.message)
+            console.error("Sign up failed:", err)
+            setError(err.message)
         } finally {
             setLoading(false)
         }
@@ -39,6 +40,12 @@ const Signup = () => {
                         onChange={(e) => setEmail(e.target.value)} 
                         type="email" 
                         placeholder="Email" 
+                        required 
+                    />
+                    <input 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        type="text" 
+                        placeholder="Username" 
                         required 
                     />
                     <input 

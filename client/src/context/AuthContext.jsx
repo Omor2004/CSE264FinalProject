@@ -6,19 +6,48 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({children}) => {
     const [session, setSession] = useState(undefined)
 
+    const addUserToTable = async (id, username) => {
+        const { data, error } = await supabase
+            .from("users")
+            .insert([{ id, username }])
+
+        if (error) {
+            console.error("Error adding user to table:", error.message)
+            return { success: false, error: error.message }
+        }
+
+        return { success: true, data }
+    }
+
+
     // sign up
-    const signUpNewUser = async (email, password) => {
+    const signUpNewUser = async (email, password, username) => {
         const {data, error} = await supabase.auth.signUp({
             email: email,
             password: password,
+            options: {
+                data: {
+                    username: username,
+                }
+            },
         })
 
         if(error){
             console.error("Error signing up:", error.message)
             return {success: false, error}
         }
+
+        if (data.user) {
+            const userId = data.user.id
+            const username = data.user.user_metadata.username
+            const tableResult = await addUserToTable(userId, username)
+            if (!tableResult.success) {
+                return { success: false, error: tableResult.error }
+            }
+        }
         return {success: true, data}
     }
+    
     // log in
     const login = async (email, password) => {
         try{
@@ -47,8 +76,8 @@ export const AuthContextProvider = ({children}) => {
     }, [])
 
     // sign out
-    const signOut = ()  => {
-        const { error } = supabase.auth.signOut()
+    const signOut = async () => {
+        const { error } = await supabase.auth.signOut()
         if (error) {
             console.error("Error signing out:", error.message)
         }
