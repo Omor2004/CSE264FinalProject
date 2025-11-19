@@ -134,7 +134,7 @@ app.get('/users_anime_list', async (req, res) => {
     res.json(list)
   } catch (error) {
     console.error(error)
-    res.status(500).json({ error: 'Failed to fetch users anime list' })
+    res.status(500).json({ error: 'Failed to fetch user' })
   }
 })
 
