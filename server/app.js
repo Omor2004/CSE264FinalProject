@@ -23,15 +23,67 @@ app.get('/users', async (req, res) => {
   }
 })
 
-app.get('/usersAnimeList', async (req, res) => {
+// Request data from a specific user
+app.get('/users/:id', async (req, res) => {
+  const { id } = req.params
   try {
-    const userAnimeList = await sql`SELECT * FROM users_anime_list`
-    res.json(userAnimeList)
+    const rows = await sql`
+      SELECT id, username, fullname, avatar, bio, created_at
+      FROM users
+      WHERE id = ${id}
+    `
+    if (rows.length === 0) return res.status(404).json({ error: 'User not found' })
+    res.json(rows[0])
   } catch (error) {
     console.error(error)
-    res.status(500).json({ error: 'Failed to fetch users anime list' })
+    res.status(500).json({ error: 'Failed to fetch user' })
   }
 })
+
+// Add user to to users table
+app.post('/users', async (req, res) =>{
+  const { username, fullname } = req.body
+  try {
+    const result = await sql`INSERT INTO users (username, fullname) VALUES (${username}, ${fullname}) RETURNING *`
+    res.json(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to add user' })
+  }
+})
+
+// Update user information
+app.put('/users/:id', async (req, res) => {
+  const { id } = req.params
+  const { username, fullname, avatar, bio } = req.body
+  try {
+    const result = await sql`
+      UPDATE users
+      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}
+      WHERE id = ${id}
+      RETURNING id, username, fullname, avatar, bio, created_at
+    `
+    if (result.length === 0) return res.status(404).json({ error: 'User not found' })
+    res.json(result[0])
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to update user' })
+  }
+})
+
+// Delete user from users table
+app.delete('/users/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const result = await sql`DELETE FROM users WHERE id = ${id} RETURNING *`
+    res.json(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to delete user' })
+  }
+})
+
+
 
 // to run API, use npm run dev
 app.listen(app.get('port'), () => {
