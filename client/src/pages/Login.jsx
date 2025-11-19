@@ -21,7 +21,7 @@ const Login = () => {
                 console.log("Sign up successful:", result.data)
                 navigate("/")
             }
-        }catch (err) {
+        }catch (error) {
             console.error("Login failed:", error)
             setError(error.message)
         } finally {
