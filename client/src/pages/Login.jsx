@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { UserAuth } from "../context/AuthContext.jsx";
 
@@ -6,27 +6,32 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
-    const [loading, setLoading] = useState("")
-    
+    const [loading, setLoading] = useState(false) //d: i set this to false due to supabase session looping to many times when login
     const { session, login } = UserAuth()
     const navigate = useNavigate();
     console.log("Current session:", session)
+
+    useEffect(() => {
+        if(session) {
+            console.log('session updated, navigating to home.')
+            navigate('/')
+        }
+    }, [session, navigate])
 
     const handleLogin = async (e) => {
         e.preventDefault()
         setLoading(true)
         try {
-            const result = await login(email, password)
-            if(result.success){
-                console.log("Sign up successful:", result.data)
-                navigate("/")
-            }
+            await login(email, password)
         }catch (error) {
             console.error("Login failed:", error)
             setError(error.message)
         } finally {
             setLoading(false)
         }
+    }
+    if (session) {
+        return <p>Redirecting...</p>
     }
 
     return (

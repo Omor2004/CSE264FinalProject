@@ -4,7 +4,7 @@ import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 
 export const router = createBrowserRouter([
-    {path: "/", element: <App />},
+    {path: "*", element: <App />},
     {path: "/signup", element: <Signup />},
     {path: "/login", element: <Login />},
 
