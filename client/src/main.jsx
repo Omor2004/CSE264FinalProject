@@ -12,9 +12,9 @@ import { ColorModeProvider } from './context/ColorModeProvider'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ColorModeProvider>
-        <AuthContextProvider>
-          <RouterProvider router={router}/> 
-        </AuthContextProvider>
+      <AuthContextProvider>
+        <RouterProvider router={router}/> 
+      </AuthContextProvider>
     </ColorModeProvider>
   </StrictMode>
 )

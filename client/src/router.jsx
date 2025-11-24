@@ -31,16 +31,3 @@ export const router = createBrowserRouter(
     </>
   )
 )
-
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { RouterProvider } from 'react-router-dom'
-import { ColorModeProvider } from './context/ColorModeProvider'
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <ColorModeProvider>
-        <RouterProvider router={router} /> 
-    </ColorModeProvider>
-  </React.StrictMode>,
-)
