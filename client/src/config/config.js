@@ -10,6 +10,19 @@ import SearchPage from '../pages/SearchPage'
 import MyListPage from '../pages/MyListPage'
 import ProfilePage from '../pages/ProfilePage'
 
+export const ANIME_DROPDOWN_LINKS = [
+  {
+    name: 'Top Anime',
+    path: '/top-anime', 
+    apiEndpoint: 'top/anime',
+  },
+  {
+    name: 'Current Season',
+    path: '/season/now', 
+    apiEndpoint: 'seasons/now',
+  },
+]
+
 export const PUBLIC_NAVIGATION_LINKS = [
   {
     name: 'Anime',

@@ -7,7 +7,6 @@ import {
 } from './config/config'
 
 import Layout from './components/Layout'
-import Signup from './pages/Signup'
 import { ColorModeProvider } from './context/ColorModeProvider'
 
 
@@ -22,8 +21,8 @@ function App() {
         {allLinks.map((link) => (
         <Route key={link.path} path={link.path} element={<link.component />} />
         ))}
-          <Route path='/login' element={<Signup />} />
-          <Route path='/signup' element={<h1>Sign Up Page Placeholder</h1>} />
+          {/* <Route path='/login' element={<Signup />} />
+          <Route path='/signup' element={<h1>Sign Up Page Placeholder</h1>} /> */}
           <Route path='*' element={<h1>404 Not Found</h1>} />
         </Route>
       </Routes>

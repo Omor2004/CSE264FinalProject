@@ -4,16 +4,16 @@ import {
     Typography, Box, Card, CardContent, CardMedia, Button, IconButton, useTheme, Tooltip
 } from '@mui/material'
 
-/**
- * A reusable component for displaying public anime data with an 'Add to List' action.
- * * @param {object} anime - The anime data object (from Jikan API).
- * @param {function} isItemInList - Checks if the item is already in the user's list.
- * @param {function} addItemToList - Adds the item to the user's Supabase list.
- * @param {boolean} isAuthenticated - Whether the user is logged in.
- */
+// /**
+//  * A reusable component for displaying public anime data with an 'Add to List' action.
+//  * * @param {object} anime - The anime data object (from Jikan API).
+//  * @param {function} isItemInList - Checks if the item is already in the user's list.
+//  * @param {function} addItemToList - Adds the item to the user's Supabase list.
+//  * @param {boolean} isAuthenticated - Whether the user is logged in.
+//  */
+
 const AnimeCardComponent = ({ anime, isItemInList, addItemToList, isAuthenticated }) => {
   const theme = useTheme()
-// Check if the item (using its Jikan ID) is already in the user's list
   const isAdded = isItemInList(anime.jikan_id) 
 
   const handleAdd = async () => {
@@ -33,7 +33,7 @@ const AnimeCardComponent = ({ anime, isItemInList, addItemToList, isAuthenticate
       sx={{ 
         height: '100%', 
         display: 'flex', 
-        flexDirection: { xs: 'column', sm: 'row' }, // Stack vertically on mobile, horizontal on tablet+
+        flexDirection: { xs: 'column', sm: 'row' },
         boxShadow: theme.shadows[3],
         borderRadius: 2,
         transition: '0.3s',
@@ -47,8 +47,8 @@ const AnimeCardComponent = ({ anime, isItemInList, addItemToList, isAuthenticate
       <Box sx={{ 
         position: 'relative',
         flexShrink: 0,
-        width: { xs: '100%', sm: 160 }, // Full width on mobile, fixed width on tablet+
-        height: { xs: 200, sm: 'auto' }, // Fixed height on mobile, auto on tablet+
+        width: { xs: '100%', sm: 160 },
+        height: { xs: 200, sm: 'auto' },
       }}>
         <CardMedia
           component="img"
