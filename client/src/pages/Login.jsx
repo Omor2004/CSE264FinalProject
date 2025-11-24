@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom"
 import { UserAuth } from "../context/AuthContext.jsx";
 
 const Login = () => {
+    const { session, login } = UserAuth || {}
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false) //d: i set this to false due to supabase session looping to many times when login
-    const { session, login } = UserAuth()
     const navigate = useNavigate();
     console.log("Current session:", session)
 
@@ -21,6 +21,13 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault()
         setLoading(true)
+
+        if (!login) {
+            setError("Authentication service not available.")
+            setLoading(false)
+            return
+        }
+
         try {
             await login(email, password)
         }catch (error) {

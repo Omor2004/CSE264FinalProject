@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
-import { UserAuth } from '../../context/AutContext'
-import { fetchJikanData } from '../../api/jikanClient'
-import { supabase } from '../../supabaseClient'
+import { UserAuth } from '../context/AuthContext'
+import { fetchJikanData } from '../api/jikanApi'
+import { supabase } from '../supabaseClient'
 
 const USER_LIST_TABLE = 'users_anime_list' 
 

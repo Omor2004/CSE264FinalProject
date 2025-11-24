@@ -116,7 +116,11 @@ const Layout = () => {
             </MenuItem>
           ))}
           </Menu>
-
+          <Box sx={{
+            display: 'flex',
+            flexGrow: 1,
+            justifyContent: 'flex-end'
+          }}>
           {PUBLIC_NAVIGATION_LINKS
           .filter(link => link.name !== 'Anime')
           .map((link) => (
@@ -134,7 +138,7 @@ const Layout = () => {
             <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
               {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton> 
-
+</Box>
           </Toolbar>
         </AppBar>
 
