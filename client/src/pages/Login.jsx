@@ -13,7 +13,6 @@ import {
 import { UserAuth } from "../context/AuthContext.jsx";
 
 const Login = () => {
-    const theme = useTheme()
     const { session, login } = UserAuth || {}
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -54,13 +53,7 @@ const Login = () => {
 
     return (
         <Container maxWidth="sm">
-            <Box sx={{
-                mt: 8,
-                p: 4,
-                backgroundColor: theme.palette.background.paper,
-                borderRadius: 2,
-                boxShadow: 3,
-            }}>
+            <Box sx={{mt: 8}}>
                 <Typography variant="h4" component="h2" mb={2} color="primary" fontWeight={700}>
                     Login
                 </Typography>
