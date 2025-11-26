@@ -7,7 +7,6 @@ import {
   Box, 
   Typography, 
   Alert,
-  useTheme,
   Stack
 } from "@mui/material"
 import { UserAuth } from "../context/AuthContext.jsx";
@@ -84,7 +83,7 @@ const Login = () => {
                     </Button>
                     {error && <Alert severity="error">{error}</Alert>}
                     <Typography>
-                        Don't have an account? <Link to='/signup'>Sign up</Link>
+                        Don't have an account? <Link to='/login'>Log in</Link>
                     </Typography>
                 </Stack>
             </Box>

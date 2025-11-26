@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { 
+  Container, 
+  TextField, 
+  Button, 
+  Box, 
+  Typography, 
+  Alert,
+  Stack
+} from "@mui/material"
 import { UserAuth } from "../context/AuthContext.jsx";
 
 const Signup = () => {
@@ -32,36 +41,52 @@ const Signup = () => {
   }
 
   return (
-    <>
-      <form onSubmit={handleSignUp}>
-        <h2>Sign up!</h2>
-        <p>Already have an account? <Link to='/login'>Log in</Link></p>
-        <div>
-          <input 
-            onChange={(e) => setEmail(e.target.value)} 
-            type="email" 
-            placeholder="Email" 
-            required 
-          />
-          <input 
-            onChange={(e) => setUsername(e.target.value)} 
-            type="text" 
-            placeholder="Username" 
-            required 
-          />
-          <input 
-            onChange={(e) => setPassword(e.target.value)} 
-            type="password" 
-            placeholder="Password" 
-            required 
-          />
-          <button type="submit" disabled={loading}>
-            Sign Up
-          </button>
-          {error && <p className="error-message">{error}</p>}
-        </div>
-      </form>
-    </>
+    <Container maxWidth="sm">
+            <Box sx={{mt: 8}}>
+                <Typography variant="h4" component="h2" mb={2} color="primary" fontWeight={700}>
+                    Login
+                </Typography>
+                <Stack component="form" onSubmit={handleSignUp} spacing={2}>
+                    <TextField
+                        fullWidth
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <TextField
+                        fullWidth
+                        type="text"
+                        placeholder="Username"
+                        value={password}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                    <TextField
+                        fullWidth
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <Button 
+                        type="submit" 
+                        variant="contained" 
+                        fullWidth
+                        disabled={loading}
+                    >
+                        {loading ? "Logging In..." : "Log In"}
+                    </Button>
+                    {error && <Alert severity="error">{error}</Alert>}
+                    <Typography>
+                        Already have an account? <Link to='/login'>Log in</Link>
+                    </Typography>
+                </Stack>
+            </Box>
+        </Container>
+    
   );
 }
 

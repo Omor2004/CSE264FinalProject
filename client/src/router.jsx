@@ -21,13 +21,11 @@ export const router = createBrowserRouter(
         <Route path="top-anime" element={<TopAnime />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="list" element={<MyListPage />} />
-        
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         {/* 404 Fallback for paths INSIDE the layout */}
         <Route path="*" element={<NotFound />} />
       </Route>
-
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
     </>
   )
 )
