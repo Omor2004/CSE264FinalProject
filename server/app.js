@@ -23,7 +23,7 @@ app.get('/users', async (req, res) => {
   }
 })
 
-// Request data from a specific user
+// Request data from a specific user from user table
 app.get('/users/:id', async (req, res) => {
   const { id } = req.params
   try {
@@ -40,7 +40,7 @@ app.get('/users/:id', async (req, res) => {
   }
 })
 
-// Add user to to users table
+// Add user to users table
 app.post('/users', async (req, res) =>{
   const { username, fullname } = req.body
   try {
@@ -52,7 +52,7 @@ app.post('/users', async (req, res) =>{
   }
 })
 
-// Update user information
+// Update user information in user table
 app.put('/users/:id', async (req, res) => {
   const { id } = req.params
   const { username, fullname, avatar, bio } = req.body
@@ -82,6 +82,84 @@ app.delete('/users/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete user' })
   }
 })
+
+// Anime list routes
+
+// Get all entries from users_anime_list table
+app.get('/users_anime_list', async (req, res) => {
+  try {
+    const list = await sql`SELECT * FROM users_anime_list`
+    res.json(list)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to fetch users anime list' })
+  }
+})
+
+// Request data from a specific user from users_anime_list table
+app.get('/users_anime_list/:user_id', async (req, res) => {
+  const { user_id } = req.params
+  try {
+    const list = await sql`
+      SELECT * FROM users_anime_list WHERE user_id = ${user_id}
+    `
+    if (list.length === 0) return res.status(404).json({ error: 'Not found' })
+    res.json(list)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to fetch users anime list' })
+  }
+})
+
+// Add to users_anime_list table
+app.post('/users_anime_list', async (req, res) => {
+  const { status, episodes_watched, user_score } = req.body
+  try {
+    const result = await sql`
+      INSERT INTO users_anime_list (status, episodes_watched, user_score)
+      VALUES ( ${status}, ${episodes_watched}, ${user_score})
+      RETURNING *
+    `
+    // postgres.js tagged template returns an array
+    res.status(201).json(result[0])
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to add to users anime list' })
+  }
+})
+
+// Update users_anime_list table
+app.put('/users_anime_list/:user_id', async (req, res) => {
+  const { user_id } = req.params
+  const { status, user_score, episodes_watched } = req.body
+  try {
+    const result = await sql`
+      UPDATE users_anime_list
+      SET status = ${status}, user_score = ${user_score}, episodes_watched = ${episodes_watched}
+      WHERE user_id = ${user_id}
+      RETURNING *
+    `
+    if (result.length === 0) return res.status(404).json({ error: 'Not found' })
+    res.json(result[0])
+  }
+  catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to update users anime list' })
+  }
+})
+
+// Delete from users_anime_list table
+app.delete('/users_anime_list/:user_id', async (req, res) => {
+  const { user_id } = req.params
+  try {
+    const result = await sql`DELETE FROM users_anime_list WHERE user_id = ${user_id} RETURNING *`
+    res.json(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to delete from users anime list' })
+  }
+})
+
 
 
 
