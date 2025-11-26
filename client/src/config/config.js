@@ -8,7 +8,22 @@ import { Home as HomeIcon,
 import HomePage from   '../pages/HomePage'
 import SearchPage from '../pages/SearchPage'
 import MyListPage from '../pages/MyListPage'
+import TopAnime from '../pages/TopAnime'
 import ProfilePage from '../pages/ProfilePage'
+
+export const ANIME_DROPDOWN_LINKS = [
+  {
+    name: 'Top Anime',
+    path: '/top-anime', 
+    apiEndpoint: 'top/anime',
+    component: TopAnime,
+  },
+  {
+    name: 'Current Season',
+    path: '/season/now', 
+    apiEndpoint: 'seasons/now',
+  },
+]
 
 export const PUBLIC_NAVIGATION_LINKS = [
   {
