@@ -12,7 +12,7 @@ import {
 import { UserAuth } from "../context/AuthContext.jsx";
 
 const Login = () => {
-    const { session, login } = UserAuth || {}
+    const { session, login } = UserAuth() || {}
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
@@ -83,7 +83,7 @@ const Login = () => {
                     </Button>
                     {error && <Alert severity="error">{error}</Alert>}
                     <Typography>
-                        Don't have an account? <Link to='/login'>Log in</Link>
+                        Don't have an account? <Link to='/signup'>Sign up</Link>
                     </Typography>
                 </Stack>
             </Box>

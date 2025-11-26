@@ -17,7 +17,7 @@ const Signup = () => {
   const [username, setUsername] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false) //d: i set this to false due to supabase session looping to many times when login
-  const { session, signUpNewUser } = UserAuth || {}
+  const { session, signUpNewUser } = UserAuth() || {}
   const navigate = useNavigate();
   console.log("Current session:", session)
 
@@ -59,7 +59,7 @@ const Signup = () => {
                         fullWidth
                         type="text"
                         placeholder="Username"
-                        value={password}
+                        value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
