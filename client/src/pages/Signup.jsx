@@ -44,7 +44,7 @@ const Signup = () => {
     <Container maxWidth="sm">
             <Box sx={{mt: 8}}>
                 <Typography variant="h4" component="h2" mb={2} color="primary" fontWeight={700}>
-                    Login
+                    Sign Up!
                 </Typography>
                 <Stack component="form" onSubmit={handleSignUp} spacing={2}>
                     <TextField
