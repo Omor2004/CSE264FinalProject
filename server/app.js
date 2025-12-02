@@ -120,7 +120,6 @@ app.post('/users_anime_list', async (req, res) => {
       VALUES ( ${status}, ${episodes_watched}, ${user_score})
       RETURNING *
     `
-    // postgres.js tagged template returns an array
     res.status(201).json(result[0])
   } catch (error) {
     console.error(error)
