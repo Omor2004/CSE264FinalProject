@@ -160,8 +160,6 @@ app.delete('/users_anime_list/:user_id', async (req, res) => {
 })
 
 
-
-
 // to run API, use npm run dev
 app.listen(app.get('port'), () => {
     console.log("App is running at http://localhost:3000")
