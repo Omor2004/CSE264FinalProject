@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { UserAuth } from '../context/AuthContext'
 
+import AppFooter from './AppFooter'
+
 import {
   PUBLIC_NAVIGATION_LINKS,
   // ANIME_DROPDOWN_LINKS,
@@ -156,8 +158,8 @@ const Layout = () => {
           <Outlet />
         </Container>
 
-        <Box component='footer' sx={{ py: 3, bgcolor: 'background.paper', textAlign: 'center' }} />
-
+        {/* <Box component='footer' sx={{ py: 3, bgcolor: 'background.paper', textAlign: 'center' }} /> */}
+        <AppFooter />
       </Box>
     </>
   )
