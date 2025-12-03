@@ -23,6 +23,8 @@ export const router = createBrowserRouter(
         <Route path="current-season" element={<CurrentSeason />} />
         <Route path="anime/:jikanId/:slug" element={<AnimeDetail />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="profile/:id" element={<ProfilePage />} />
+        <Route path="list" element={<MyListPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* 404 Fallback for paths INSIDE the layout */}
