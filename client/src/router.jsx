@@ -23,8 +23,11 @@ export const router = createBrowserRouter(
         <Route path="current-season" element={<CurrentSeason />} />
         <Route path="anime/:jikanId/:slug" element={<AnimeDetail />} />
         <Route path="profile" element={<ProfilePage />} />
+<<<<<<< HEAD
         <Route path="profile/:id" element={<ProfilePage />} />
         <Route path="list" element={<MyListPage />} />
+=======
+>>>>>>> refs/remotes/origin/Day-Branch
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* 404 Fallback for paths INSIDE the layout */}
