@@ -69,6 +69,18 @@ const Layout = () => {
     alignItems: isHomePage ? 'center' : 'flex-start',
   }
 
+  // change when is HomePage '/' 
+  const containerStyles = {
+    flexGrow: 1,
+    pt: isHomePage ? 0 : 4,
+    pb: isHomePage ? 0 : 8,
+    px: isHomePage ? 0 : 3,
+    
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: isHomePage ? 'center' : 'flex-start',
+  }
+
   return (
     <>
       <Box sx={{
