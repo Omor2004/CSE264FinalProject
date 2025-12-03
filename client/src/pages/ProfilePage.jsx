@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   Box,
@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined'
+import SmallAnimeCard from '../components/pfpAnimeCard'
 
 
 const ProfilePage = () => {
@@ -22,11 +23,16 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  // NEW: anime list state
+  const [animeList, setAnimeList] = useState([])
+  const [listLoading, setListLoading] = useState(true)
+
   useEffect(() => {
-    const userId = id ?? '1' // fallback if route param not present
+    const routeUserId = id ?? '1'
     const controller = new AbortController()
 
-    fetch(`http://localhost:3000/users/${userId}`, { signal: controller.signal })
+    // Load user first
+    fetch(`http://localhost:3000/users/${routeUserId}`, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to load user')
         return res.json()
@@ -39,6 +45,69 @@ const ProfilePage = () => {
 
     return () => controller.abort()
   }, [id])
+
+  // Load anime list after user is known (uses user.id which is a uuid in your table)
+  useEffect(() => {
+    if (!user?.id) return
+    const controller = new AbortController()
+    setListLoading(true)
+
+    fetch(`http://localhost:3000/users_anime_list/${user.id}`, { signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to load anime list')
+        return res.json()
+      })
+      .then(async (list) => {
+        const rows = Array.isArray(list) ? list : []
+
+        // Fetch Jikan details in parallel for items that have anime_id
+        const enriched = await Promise.all(
+          rows.map(async (row) => {
+            const jikanId = row.anime_id
+            let details = null
+            if (jikanId) {
+              try {
+                const r = await fetch(`https://api.jikan.moe/v4/anime/${jikanId}`)
+                const d = await r.json()
+                details = d?.data || null
+              } catch (e) {
+                console.warn('Jikan fetch failed for', jikanId, e)
+              }
+            }
+
+            return {
+              jikan_id: jikanId,
+              title: details?.title || details?.title_english || details?.title_japanese || 'Untitled',
+              picture: details?.images?.jpg?.image_url || details?.images?.webp?.image_url || '',
+              status: row.status || 'Unknown',
+              episodes: row.episodes_watched ?? 0,
+              user_score: row.user_score ?? null,
+              user_id: row.user_id,
+            }
+          })
+        )
+
+        setAnimeList(enriched)
+      })
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.error(err)
+      })
+      .finally(() => setListLoading(false))
+
+    return () => controller.abort()
+  }, [user])
+
+  // Sort list: score high->low, then id high->low
+  const sortedAnimeList = useMemo(() => {
+    return [...animeList].sort((a, b) => {
+      const scoreA = a.user_score ?? -Infinity
+      const scoreB = b.user_score ?? -Infinity
+      if (scoreA !== scoreB) return scoreB - scoreA
+      const idA = Number(a.jikan_id ?? a.anime_id ?? 0)
+      const idB = Number(b.jikan_id ?? b.anime_id ?? 0)
+      return idB - idA
+    })
+  }, [animeList])
 
   const p = user
     ? {
@@ -110,8 +179,43 @@ const ProfilePage = () => {
         </Paper>
       </Stack>
 
-      {/* Bottom section container only (kept empty) */}
-      <Card sx={{ mt: 2, borderRadius: 3, minHeight: 160 }} />
+      {/* Bottom section with anime cards */}
+      <Card sx={{ mt: 2, borderRadius: 3 }}>
+        <Card sx={{ boxShadow: 0 }}>
+          <Typography variant="h6" sx={{ px: 2, pt: 2 }}>{p?.name}'s Top Anime</Typography>
+        </Card>
+        <Divider />
+        <Card sx={{ boxShadow: 0, p: 2 }}>
+          {listLoading ? (
+            <Typography variant="body2" color="text.secondary">Loading list…</Typography>
+          ) : sortedAnimeList.length === 0 ? (
+            <Typography variant="body2" color="text.secondary">No entries yet.</Typography>
+          ) : (
+            <Box
+              sx={{
+                display: 'grid',
+                gap: 2,
+                gridTemplateColumns: {
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(3, 1fr)',
+                  lg: 'repeat(4, 1fr)',
+                  xl: 'repeat(5, 1fr)',
+                },
+              }}
+            >
+              {/* limit to top 10 and pass rank */}
+              {sortedAnimeList.slice(0, 10).map((item, idx) => (
+                <SmallAnimeCard
+                  key={`${item.user_id}-${item.jikan_id ?? item.anime_id ?? Math.random()}`}
+                  anime={item}
+                  rank={idx + 1}
+                />
+              ))}
+            </Box>
+          )}
+        </Card>
+      </Card>
     </Container>
   )
 }
