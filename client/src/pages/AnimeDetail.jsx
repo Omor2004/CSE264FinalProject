@@ -152,31 +152,31 @@ const AnimeDetail = () => {
       </Grid>
 
 
-          <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 3 }} />
 
-          {/* Synopsis */}
-          <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
-              Synopsis
-          </Typography>
-          <Typography variant="body1" paragraph sx={{ whiteSpace: 'pre-wrap' }}>
-              {anime.synopsis || "No detailed synopsis available."}
-          </Typography>
-          
-          {/* Themes */}
-          {anime.themes && anime.themes.length > 0 && (
-            <Box sx={{ mt: 3 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>Themes:</Typography>
-              {anime.themes.map((theme) => (
-                <Chip 
-                  key={theme.mal_id} 
-                  label={theme.name} 
-                  variant="outlined"
-                  size="small" 
-                  sx={{ mr: 1, mt: 1 }}
-                />
-              ))}
-            </Box>
-          )}
+      {/* Synopsis */}
+      <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+          Synopsis
+      </Typography>
+      <Typography variant="body1" paragraph sx={{ whiteSpace: 'pre-wrap' }}>
+          {anime.synopsis || "No detailed synopsis available."}
+      </Typography>
+      
+      {/* Themes */}
+      {anime.themes && anime.themes.length > 0 && (
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>Themes:</Typography>
+          {anime.themes.map((theme) => (
+            <Chip 
+              key={theme.mal_id} 
+              label={theme.name} 
+              variant="outlined"
+              size="small" 
+              sx={{ mr: 1, mt: 1 }}
+            />
+          ))}
+        </Box>
+      )}
     </Container>
   )
 }
