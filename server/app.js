@@ -132,12 +132,12 @@ app.post('/users_anime_list', async (req, res) => {
 // Update users_anime_list table
 app.put('/users_anime_list/:user_id', async (req, res) => {
   const { user_id } = req.params
-  const { status, user_score, episodes_watched } = req.body
+  const { anime_id, status, user_score, episodes_watched } = req.body
   try {
     const result = await sql`
       UPDATE users_anime_list
       SET status = ${status}, user_score = ${user_score}, episodes_watched = ${episodes_watched}
-      WHERE user_id = ${user_id}
+      WHERE user_id = ${user_id} and anime_id = ${req.body.anime_id}
       RETURNING *
     `
     if (result.length === 0) return res.status(404).json({ error: 'Not found' })
