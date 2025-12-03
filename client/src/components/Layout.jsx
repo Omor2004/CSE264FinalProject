@@ -151,6 +151,7 @@ const Layout = () => {
           </Toolbar>
 
           <Toolbar>
+<<<<<<< HEAD
             <Button
               key="Anime"
               color='inherit'
@@ -162,34 +163,28 @@ const Layout = () => {
               aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
               aria-haspopup="true"
             >
-<<<<<<< HEAD
-              {link.name}
-            </MenuItem>
-              ))}
-            </Menu>
-
-=======
               Anime
             </Button>
 
-            <Menu
-              id="anime-hover-menu"
-              anchorEl={anchorElNav}
-              open={Boolean(anchorElNav)}
-              onClose={handleNavMenuClose}
-              disableAutoFocus={false}
-              disableRestoreFocus={false}
-              transitionDuration={150}
+          <Menu
+            id="anime-hover-menu"
+            anchorEl={anchorElNav}
+            open={Boolean(anchorElNav)}
+            onClose={handleNavMenuClose}
+            disableAutoFocus={false} 
+            disableRestoreFocus={false}
+            transitionDuration={150}
+          >
+          {ANIME_DROPDOWN_LINKS.map((link) => (
+            <MenuItem 
+              key={link.name} 
+              onClick={handleNavMenuClose} 
+              component={Link} 
+              to={link.path}
+>>>>>>> 96a7e81 (updating branch)
             >
-              {ANIME_DROPDOWN_LINKS.map((link) => (
-                <MenuItem
-                  key={link.name}
-                  onClick={handleNavMenuClose}
-                  component={Link}
-                  to={link.path}
-                >
-                  {link.name}
-                </MenuItem>
+              {link.name}
+            </MenuItem>
               ))}
             </Menu>
 
