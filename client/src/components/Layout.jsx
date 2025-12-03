@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React, { useState, useContext, useRef, useEffect } from 'react'
 import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
+=======
+import React, { useState, useContext, useRef } from 'react'
+import { Link, Outlet } from 'react-router-dom'
+>>>>>>> 3b6f1d1 (changed navbar so that logged in users will see signout button instead)
 import { UserAuth } from '../context/AuthContext'
 
 import {
@@ -27,8 +32,15 @@ const Layout = () => {
   const { session, signOut } = UserAuth() || {}
   const isAuthenticated = Boolean(session?.user)
   const userId = session?.user?.id
+<<<<<<< HEAD
 
   const [avatarUrl, setAvatarUrl] = useState('')
+=======
+  const avatarUrl =
+    session?.user?.user_metadata?.avatar ||
+    session?.user?.user_metadata?.avatar_url ||
+    ''
+>>>>>>> 3b6f1d1 (changed navbar so that logged in users will see signout button instead)
 
   const animeButtonRef = useRef(null)
   
@@ -118,7 +130,11 @@ const Layout = () => {
                   <Avatar src={avatarUrl} alt="Profile" sx={{ width: 32, height: 32 }} />
                 </IconButton>
 
+<<<<<<< HEAD
                 <Button color='inherit' onClick={handleSignOut} sx={{ ml: 1 }}>
+=======
+                <Button color='inherit' onClick={signOut} sx={{ ml: 1 }}>
+>>>>>>> 3b6f1d1 (changed navbar so that logged in users will see signout button instead)
                   Sign out
                 </Button>
               </>
@@ -135,42 +151,49 @@ const Layout = () => {
           </Toolbar>
 
           <Toolbar>
-          <Button 
-            key="Anime"
-            color='inherit' 
-            component={Link} 
-            to='/' 
-            startIcon={<HomeIcon />}
-            ref={animeButtonRef}
-            // HOVER HANDLERS
-            onMouseEnter={handleNavMenuOpen} 
-            aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
-            aria-haspopup="true"
-          >
-            Anime
-          </Button>
-
-          <Menu
-            id="anime-hover-menu"
-            anchorEl={anchorElNav}
-            open={Boolean(anchorElNav)}
-            onClose={handleNavMenuClose}
-            disableAutoFocus={false} 
-            disableRestoreFocus={false}
-            transitionDuration={150}
-          >
-          {ANIME_DROPDOWN_LINKS.map((link) => (
-            <MenuItem 
-              key={link.name} 
-              onClick={handleNavMenuClose} 
-              component={Link} 
-              to={link.path}
+            <Button
+              key="Anime"
+              color='inherit'
+              component={Link}
+              to='/'
+              startIcon={<HomeIcon />}
+              ref={animeButtonRef}
+              onMouseEnter={handleNavMenuOpen}
+              aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
+              aria-haspopup="true"
             >
+<<<<<<< HEAD
               {link.name}
             </MenuItem>
               ))}
             </Menu>
 
+=======
+              Anime
+            </Button>
+
+            <Menu
+              id="anime-hover-menu"
+              anchorEl={anchorElNav}
+              open={Boolean(anchorElNav)}
+              onClose={handleNavMenuClose}
+              disableAutoFocus={false}
+              disableRestoreFocus={false}
+              transitionDuration={150}
+            >
+              {ANIME_DROPDOWN_LINKS.map((link) => (
+                <MenuItem
+                  key={link.name}
+                  onClick={handleNavMenuClose}
+                  component={Link}
+                  to={link.path}
+                >
+                  {link.name}
+                </MenuItem>
+              ))}
+            </Menu>
+
+>>>>>>> 3b6f1d1 (changed navbar so that logged in users will see signout button instead)
             <Box sx={{
               display: 'flex',
               flexGrow: 1,
