@@ -1,15 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
 import {
   PUBLIC_NAVIGATION_LINKS,
+  ANIME_DROPDOWN_LINKS,
   AUTH_NAVIGATION_LINKS
 } from '../config/config'
 
 import { AppBar, CssBaseline, Toolbar, Typography, Box, Button,
-  Container, useTheme, IconButton } from "@mui/material"
+  Container, useTheme, IconButton, Menu, MenuItem } from "@mui/material"
 
-import { Brightness4 as DarkModeIcon,
+import { Home as HomeIcon,
+  Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon
 } from '@mui/icons-material'
 
@@ -20,6 +22,22 @@ const Layout = () => {
   const { toggleColorMode, mode } = useContext(ColorModeContext)
   const theme = useTheme()
   const isAuthenticated = false
+  const animeButtonRef = useRef(null)
+
+  const [anchorElNav, setAnchorElNav] = useState(null)
+
+  const handleNavMenuOpen = (event) => {
+    if (animeButtonRef.current) {
+      setTimeout(() => {
+        animeButtonRef.current.focus()
+      }, 50)
+    }
+    setAnchorElNav(event.currentTarget)
+  }
+
+  const handleNavMenuClose = () => {
+    setAnchorElNav(null)
+  }
 
   return (
     <>
@@ -38,24 +56,9 @@ const Layout = () => {
               to='/'
               sx={{ flexGrow: 1, fontWeight: 700, textDecoration: 'none', color: 'inherit' }}
             >
-              AnimePulse
+              AnimePulse 
+              {/* name in review! */}
             </Typography>
-
-            <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-              {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-            </IconButton>
-              
-            {PUBLIC_NAVIGATION_LINKS.map((link) => (
-                <Button 
-                  key={link.name} 
-                  color='inherit' 
-                  component={Link} 
-                  to={link.path} 
-                  startIcon={<link.icon />}
-                >
-                  {link.name}
-                </Button>
-            ))}
               
             {isAuthenticated ? (
               AUTH_NAVIGATION_LINKS.map((link) => (
@@ -79,7 +82,72 @@ const Layout = () => {
                 </Button>
               </>
             )}
+          </Toolbar>
 
+          <Toolbar>
+          <Button 
+            key="Anime"
+            color='inherit' 
+            component={Link} 
+            to='/' 
+            startIcon={<HomeIcon />}
+            ref={animeButtonRef}
+            // HOVER HANDLERS
+            onMouseEnter={handleNavMenuOpen} 
+            aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
+            aria-haspopup="true"
+          >
+            Anime
+          </Button>
+
+          <Menu
+            id="anime-hover-menu"
+            anchorEl={anchorElNav}
+            open={Boolean(anchorElNav)}
+            onClose={handleNavMenuClose}
+            // slotProps={{
+            //   paper: {
+            //     onMouseLeave: handleNavMenuClose
+            //   }
+            // }}
+            disableAutoFocus={false} 
+            disableRestoreFocus={false}
+            transitionDuration={150}
+          >
+          {ANIME_DROPDOWN_LINKS.map((link) => (
+            <MenuItem 
+              key={link.name} 
+              onClick={handleNavMenuClose} 
+              component={Link} 
+              to={link.path}
+            >
+              {link.name}
+            </MenuItem>
+          ))}
+          </Menu>
+          <Box sx={{
+            display: 'flex',
+            flexGrow: 1,
+            justifyContent: 'flex-end'
+          }}>
+          {PUBLIC_NAVIGATION_LINKS
+          .filter(link => link.name !== 'Anime')
+          .map((link) => (
+            <Button 
+              key={link.name} 
+              color='inherit' 
+              component={Link} 
+              to={link.path} 
+              {...(link.icon && { startIcon: <link.icon /> })} 
+            >
+                {link.name}
+            </Button>
+          ))}
+
+            <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+              {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton> 
+</Box>
           </Toolbar>
         </AppBar>
 
@@ -104,5 +172,6 @@ const Layout = () => {
     </>
   )
 }
+
 
 export default Layout
