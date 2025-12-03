@@ -72,8 +72,8 @@ const SmallAnimeCard = ({ anime }) => {
             <Typography 
               variant='h6' 
               component='h2' 
+              color= 'primary'
               sx={{ 
-                color: '#0d47a1',
                 fontWeight: 600, 
                 mb: 1,
                 fontSize: '1rem'
