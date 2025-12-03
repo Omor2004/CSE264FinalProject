@@ -11,6 +11,9 @@ import {
 } from "@mui/material"
 import { UserAuth } from "../context/AuthContext.jsx";
 
+import backgroundImage from '../images/transparent-background-login2.png'
+const BACKGROUND_IMAGE_URL = backgroundImage
+
 const Signup = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -42,6 +45,25 @@ const Signup = () => {
 
   return (
     <Container maxWidth="sm">
+      <Box 
+          component="img"
+          src={BACKGROUND_IMAGE_URL}
+          alt="Anime Character"
+          sx={{
+              position: 'absolute',
+              top: { xs: 470, sm: 450, md: 450 },
+              right: { xs: 0, sm: 0, md: 0 },
+              width: { xs: 250, sm: 250, md: 250 },
+              height: 'auto',
+              zIndex: 1,
+              opacity: 1,
+              overflow: 'hidden',
+              pointerEvents: 'none',
+              transform: { xs: 'translateY(-10%)', sm: 'none' }
+              
+          }}
+          onError={(e) => { e.target.style.display = 'none'; console.error("Image failed to load:", BACKGROUND_IMAGE_URL); }}
+      />
             <Box sx={{mt: 8}}>
                 <Typography variant="h4" component="h2" mb={2} color="primary" fontWeight={700}>
                     Sign Up!
