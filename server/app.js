@@ -115,12 +115,13 @@ app.get('/users_anime_list/:user_id', async (req, res) => {
 })
 
 // Add to users_anime_list table
-app.post('/users_anime_list', async (req, res) => {
-  const { status, episodes_watched, user_score } = req.body
+app.post('/users_anime_list/:user_id', async (req, res) => {
+  const { user_id } = req.params
+  const { anime_id, status, episodes_watched, user_score } = req.body
   try {
     const result = await sql`
-      INSERT INTO users_anime_list (status, episodes_watched, user_score)
-      VALUES ( ${status}, ${episodes_watched}, ${user_score})
+      INSERT INTO users_anime_list (user_id, anime_id, status, episodes_watched, user_score)
+      VALUES ( ${user_id}, ${anime_id}, ${status}, ${episodes_watched}, ${user_score})
       RETURNING *
     `
     res.status(201).json(result[0])
