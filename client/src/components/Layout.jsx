@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import React, { useState,useEffect, useContext, useRef } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
-=======
 import React, { useState, useContext, useRef, useEffect } from 'react'
 import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
->>>>>>> 96a7e81 (updating branch)
 import { UserAuth } from '../context/AuthContext'
 
 import {
@@ -140,18 +135,6 @@ const Layout = () => {
           </Toolbar>
 
           <Toolbar>
-<<<<<<< HEAD
-            <Button
-              key="Anime"
-              color='inherit'
-              component={Link}
-              to='/'
-              startIcon={<HomeIcon />}
-              ref={animeButtonRef}
-              onMouseEnter={handleNavMenuOpen}
-              aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
-              aria-haspopup="true"
-=======
           <Button 
             key="Anime"
             color='inherit' 
@@ -182,7 +165,6 @@ const Layout = () => {
               onClick={handleNavMenuClose} 
               component={Link} 
               to={link.path}
->>>>>>> 96a7e81 (updating branch)
             >
               {link.name}
             </MenuItem>
