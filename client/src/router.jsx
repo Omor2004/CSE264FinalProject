@@ -10,7 +10,6 @@ import AnimeDetail from './pages/AnimeDetail'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import ProfilePage from './pages/ProfilePage'
-import MyListPage from './pages/MyListPage'
 import NotFound from './pages/NotFound'
 
 
