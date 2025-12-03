@@ -20,7 +20,7 @@ export const ANIME_DROPDOWN_LINKS = [
   },
   {
     name: 'Current Season',
-    path: '/season/now', 
+    path: '/current-season', 
     apiEndpoint: 'seasons/now',
   },
 ]
