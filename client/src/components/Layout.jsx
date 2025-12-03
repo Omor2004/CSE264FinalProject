@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useContext, useRef } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { UserAuth } from '../context/AuthContext'
 
 import {
@@ -20,6 +20,7 @@ import { ColorModeContext } from '../context/ColorModeContext'
 
 
 const Layout = () => {
+  const navigate = useNavigate()
   const { toggleColorMode, mode } = useContext(ColorModeContext)
   const theme = useTheme()
 
@@ -32,6 +33,11 @@ const Layout = () => {
   const animeButtonRef = useRef(null)
 
   const [anchorElNav, setAnchorElNav] = useState(null)
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/')
+  }
 
   useEffect(() => {
     if (isAuthenticated && userId) {
@@ -96,7 +102,7 @@ const Layout = () => {
                   <Avatar src={avatarUrl} alt="Profile" sx={{ width: 32, height: 32 }} />
                 </IconButton>
 
-                <Button color='inherit' onClick={signOut} sx={{ ml: 1 }}>
+                <Button color='inherit' onClick={handleSignOut} sx={{ ml: 1 }}>
                   Sign out
                 </Button>
               </>
