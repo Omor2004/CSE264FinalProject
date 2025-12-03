@@ -8,19 +8,19 @@ import { Home as HomeIcon,
 import HomePage from   '../pages/HomePage'
 import SearchPage from '../pages/SearchPage'
 import MyListPage from '../pages/MyListPage'
-import TopAnime from '../pages/TopAnime'
+import AllAnime from '../pages/AnimeCatalog'
 import ProfilePage from '../pages/ProfilePage'
 
 export const ANIME_DROPDOWN_LINKS = [
   {
-    name: 'Top Anime',
-    path: '/top-anime', 
+    name: 'Anime Catalog',
+    path: '/anime-catalog', 
     apiEndpoint: 'top/anime',
-    component: TopAnime,
+    component: AllAnime,
   },
   {
     name: 'Current Season',
-    path: '/season/now', 
+    path: '/current-season', 
     apiEndpoint: 'seasons/now',
   },
 ]

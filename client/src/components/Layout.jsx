@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
 import {
@@ -22,10 +22,16 @@ const Layout = () => {
   const { toggleColorMode, mode } = useContext(ColorModeContext)
   const theme = useTheme()
   const isAuthenticated = false
+  const animeButtonRef = useRef(null)
 
   const [anchorElNav, setAnchorElNav] = useState(null)
 
   const handleNavMenuOpen = (event) => {
+    if (animeButtonRef.current) {
+      setTimeout(() => {
+        animeButtonRef.current.focus()
+      }, 50)
+    }
     setAnchorElNav(event.currentTarget)
   }
 
@@ -85,6 +91,7 @@ const Layout = () => {
             component={Link} 
             to='/' 
             startIcon={<HomeIcon />}
+            ref={animeButtonRef}
             // HOVER HANDLERS
             onMouseEnter={handleNavMenuOpen} 
             aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
@@ -98,12 +105,14 @@ const Layout = () => {
             anchorEl={anchorElNav}
             open={Boolean(anchorElNav)}
             onClose={handleNavMenuClose}
-            slotProps={{
-              paper: {
-                onMouseLeave: handleNavMenuClose
-              }
-            }}
-            TransitionDuration={150}
+            // slotProps={{
+            //   paper: {
+            //     onMouseLeave: handleNavMenuClose
+            //   }
+            // }}
+            disableAutoFocus={false} 
+            disableRestoreFocus={false}
+            transitionDuration={150}
           >
           {ANIME_DROPDOWN_LINKS.map((link) => (
             <MenuItem 

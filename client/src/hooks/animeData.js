@@ -4,6 +4,7 @@ import { fetchJikanData } from '../api/jikanApi'
 import { supabase } from '../supabaseClient'
 
 const USER_LIST_TABLE = 'users_anime_list' 
+const MAX_PAGES_TO_FETCH = 5 //jikan api let us fetch data by pages, reason why we are setting 5 as a maximum to not lazy load the site
 
 export const useAnimeData = () => {
   const { session, loading: authLoading } = UserAuth()
@@ -17,9 +18,56 @@ export const useAnimeData = () => {
   const [listLoading, setListLoading] = useState(false)
   const [listError, setListError] = useState(null)
 
+
+  const fetchAllPublicAnime = useCallback(async () => {
+    setPublicLoading(true)
+    let allAnime = []
+    let page = 1
+    let hasNextPage = true
+
+    try {
+      // Loop until we run out of pages OR hit the set limit
+      while (hasNextPage && page <= MAX_PAGES_TO_FETCH) { 
+        
+        const result = await fetchJikanData('anime', page) 
+        
+        if (Array.isArray(result.data)) {
+          allAnime = allAnime.concat(result.data)
+        }
+        
+        hasNextPage = result.hasNextPage
+        page++
+
+        await new Promise(resolve => setTimeout(resolve, 500)) 
+      }
+
+      const mappedData = allAnime
+      .filter(item => item && item.mal_id)
+      .map(item => ({
+        jikan_id: item.mal_id,
+        title: item.title,
+        rating: item.score || 'N/A',
+        picture: item.images?.webp?.image_url || item.images?.jpg?.image_url,
+        description: item.synopsis ? item.synopsis.substring(0, 150) + '...' : 'No summary available.',
+        type: item.type, 
+      }))
+  setPublicAnime(mappedData)
+
+    } catch (error) {
+      console.error("Error fetching public anime:", error)
+    } finally {
+      setPublicLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchAllPublicAnime()
+  }, [fetchAllPublicAnime])
+
+
   const fetchMyList = useCallback(async () => {
     if (!userId) return
-
+    // ... (existing Supabase fetch logic for my list)
     const { data, error } = await supabase
       .from(USER_LIST_TABLE)
       .select('*')
@@ -40,24 +88,6 @@ export const useAnimeData = () => {
   }, [userId])
 
   useEffect(() => {
-    setPublicLoading(true)
-    fetchJikanData('top/anime')
-      .then(data => {
-        const mappedData = data.slice(0, 10).map(item => ({
-          jikan_id: item.mal_id,
-          title: item.title,
-          rating: item.score || 'N/A',
-          picture: item.images?.webp?.image_url || item.images?.jpg?.image_url,
-          description: item.synopsis ? item.synopsis.substring(0, 150) + '...' : 'No summary available.',
-          type: item.type, 
-        }))
-        setPublicAnime(mappedData)
-    })
-    .catch(error => console.error("Error fetching public anime:", error))
-    .finally(() => setPublicLoading(false))
-  }, [])
-
-  useEffect(() => {
     if (authLoading) return
 
     if (!isAuthenticated) {
@@ -69,45 +99,25 @@ export const useAnimeData = () => {
     setListError(null)
 
     const channel = supabase.channel(`list_changes:${userId}`)
-        .on(
-          'postgres_changes',
-          { 
-            event: '*', 
-            schema: 'public', 
-            table: USER_LIST_TABLE,
-            filter: `user_id=eq.${userId}` // Only listen for changes to this user's rows
-          },
-          (payload) => {
-            console.log('List change detected, re-fetching list:', payload)
+      .on(
+        'postgres_changes',
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: USER_LIST_TABLE,
+          filter: `user_id=eq.${userId}` 
+        },
+        (payload) => {
+          console.log('List change detected, re-fetching list:', payload)
+        fetchMyList()
+        }
+      )
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
           fetchMyList()
-          }
-        )
-        .subscribe((status) => {
-          if (status === 'SUBSCRIBED') {
-            fetchMyList()
-            setListLoading(false)
-          }
-        })
-
-    const fetchMyList = async () => {
-      const { data, error } = await supabase
-        .from(USER_LIST_TABLE)
-        .select('*')
-        .eq('user_id', userId) 
-
-      if (error) {
-        console.error("Supabase Fetch List Error:", error)
-        setListError("Failed to load your list: " + error.message)
-        setMyList({})
-      } else {
-        const newMyList = data.reduce((acc, item) => {
-          acc[item.anime_id] = item
-          return acc
-        }, {})
-        setMyList(newMyList)
-      }
-      setListLoading(false)
-    }
+          setListLoading(false)
+        }
+      })
     
     return () => {
       channel.unsubscribe()
@@ -118,7 +128,6 @@ export const useAnimeData = () => {
 
   const addItemToList = async (item) => {
     if (!isAuthenticated) return { success: false, error: "Authentication required to add items." }
-
     const { error } = await supabase
       .from(USER_LIST_TABLE)
       .upsert({ 
@@ -136,12 +145,11 @@ export const useAnimeData = () => {
       console.error("Error adding document: ", error)
       return { success: false, error: error.message }
     }
-  return { success: true }
-}
+    return { success: true }
+  }
 
   const removeItemFromList = async (jikanId) => {
     if (!isAuthenticated) return { success: false, error: "Authentication required to remove items." }
-    
     const { error } = await supabase
       .from(USER_LIST_TABLE)
       .delete()
