@@ -118,9 +118,10 @@ const Layout = () => {
                   <Avatar src={avatarUrl} alt="Profile" sx={{ width: 32, height: 32 }} />
                 </IconButton>
 
-                <Button color='inherit' onClick={handleSignOut} sx={{ ml: 1 }}>
+                <Button color='inherit' onClick={signOut} sx={{ ml: 1 }}>
                   Sign out
                 </Button>
+              </>
               </>
             ) : (
               <>
@@ -135,20 +136,19 @@ const Layout = () => {
           </Toolbar>
 
           <Toolbar>
-          <Button 
-            key="Anime"
-            color='inherit' 
-            component={Link} 
-            to='/' 
-            startIcon={<HomeIcon />}
-            ref={animeButtonRef}
-            // HOVER HANDLERS
-            onMouseEnter={handleNavMenuOpen} 
-            aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
-            aria-haspopup="true"
-          >
-            Anime
-          </Button>
+            <Button
+              key="Anime"
+              color='inherit'
+              component={Link}
+              to='/'
+              startIcon={<HomeIcon />}
+              ref={animeButtonRef}
+              onMouseEnter={handleNavMenuOpen}
+              aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
+              aria-haspopup="true"
+            >
+              Anime
+            </Button>
 
           <Menu
             id="anime-hover-menu"
