@@ -1,5 +1,6 @@
 import express from 'express'
 import sql from './db/postgres.js'
+import cors from 'cors'
 import 'dotenv/config'
 
 // create the app
@@ -8,6 +9,7 @@ const app = express()
 app.set('port', 3000)
 
 app.use(express.json())
+app.use(cors()) 
 
 app.get('/', (req, res) => {
   res.send('API is running')

@@ -1,3 +1,6 @@
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+
 const NotFound = () => {
   return (
     <Box sx={{ mt: 8, textAlign: 'center' }}>
