@@ -2,11 +2,13 @@ import express from 'express'
 import sql from './db/postgres.js'
 import cors from 'cors'
 import 'dotenv/config'
+import cors from 'cors'
 
 // create the app
 const app = express()  
 // set the port
 app.set('port', 3000)
+app.use(cors())
 
 app.use(express.json())
 app.use(cors()) 
@@ -122,7 +124,6 @@ app.post('/users_anime_list', async (req, res) => {
       VALUES ( ${status}, ${episodes_watched}, ${user_score})
       RETURNING *
     `
-    // postgres.js tagged template returns an array
     res.status(201).json(result[0])
   } catch (error) {
     console.error(error)
