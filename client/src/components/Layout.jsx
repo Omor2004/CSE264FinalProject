@@ -102,9 +102,10 @@ const Layout = () => {
                   <Avatar src={avatarUrl} alt="Profile" sx={{ width: 32, height: 32 }} />
                 </IconButton>
 
-                <Button color='inherit' onClick={handleSignOut} sx={{ ml: 1 }}>
+                <Button color='inherit' onClick={signOut} sx={{ ml: 1 }}>
                   Sign out
                 </Button>
+              </>
               </>
             ) : (
               <>
