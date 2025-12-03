@@ -2,11 +2,13 @@ import express from 'express'
 import sql from './db/postgres.js'
 import cors from 'cors'
 import 'dotenv/config'
+import cors from 'cors'
 
 // create the app
 const app = express()  
 // set the port
 app.set('port', 3000)
+app.use(cors())
 
 const corsOptions = {
   origin: 'http://localhost:5173',
