@@ -20,6 +20,7 @@ export const router = createBrowserRouter(
         <Route path="search" element={<SearchPage />} />
         <Route path="top-anime" element={<TopAnime />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="profile/:id" element={<ProfilePage />} />
         <Route path="list" element={<MyListPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
