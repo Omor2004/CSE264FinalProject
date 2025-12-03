@@ -1,7 +1,6 @@
 import express from 'express'
 import sql from './db/postgres.js'
 import 'dotenv/config'
-import cors from 'cors'
 
 // create the app
 const app = express()  
