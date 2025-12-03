@@ -4,7 +4,9 @@ import Layout from './components/Layout'
 
 import HomePage from './pages/HomePage'
 import SearchPage from './pages/SearchPage'
-import TopAnime from './pages/TopAnime'
+import AnimeCatalog from './pages/AnimeCatalog'
+import CurrentSeason from './pages/CurrentSeasonAnime'
+import AnimeDetail from './pages/AnimeDetail'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import ProfilePage from './pages/ProfilePage'
@@ -18,7 +20,9 @@ export const router = createBrowserRouter(
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
-        <Route path="top-anime" element={<TopAnime />} />
+        <Route path="anime-catalog" element={<AnimeCatalog />} />
+        <Route path="current-season" element={<CurrentSeason />} />
+        <Route path="anime/:jikanId/:slug" element={<AnimeDetail />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="list" element={<MyListPage />} />
         <Route path="/signup" element={<Signup />} />
