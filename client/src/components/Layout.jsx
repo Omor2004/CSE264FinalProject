@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState,useEffect, useContext, useRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { UserAuth } from '../context/AuthContext'
 
@@ -26,14 +26,29 @@ const Layout = () => {
   const { session, signOut } = UserAuth() || {}
   const isAuthenticated = Boolean(session?.user)
   const userId = session?.user?.id
-  const avatarUrl =
-    session?.user?.user_metadata?.avatar ||
-    session?.user?.user_metadata?.avatar_url ||
-    ''
+
+  const [avatarUrl, setAvatarUrl] = useState('')
 
   const animeButtonRef = useRef(null)
 
   const [anchorElNav, setAnchorElNav] = useState(null)
+
+  useEffect(() => {
+    if (isAuthenticated && userId) {
+      const fetchAvatarUrl = async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/users/${userId}`)
+          if (response.ok) {
+            const data = await response.json()
+            setAvatarUrl(data.avatar || '')
+          }
+        } catch (error) {
+          console.error('Failed to fetch avatar URL:', error)
+        }
+      }
+      fetchAvatarUrl()
+    }
+  }, [isAuthenticated, userId])
 
   const handleNavMenuOpen = (event) => {
     if (animeButtonRef.current) {
