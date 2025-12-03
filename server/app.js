@@ -139,7 +139,7 @@ app.put('/users_anime_list/:user_id', async (req, res) => {
     const result = await sql`
       UPDATE users_anime_list
       SET status = ${status}, user_score = ${user_score}, episodes_watched = ${episodes_watched}
-      WHERE user_id = ${user_id} and anime_id = ${req.body.anime_id}
+      WHERE user_id = ${user_id} and anime_id = ${anime_id}
       RETURNING *
     `
     if (result.length === 0) return res.status(404).json({ error: 'Not found' })
@@ -154,8 +154,9 @@ app.put('/users_anime_list/:user_id', async (req, res) => {
 // Delete from users_anime_list table
 app.delete('/users_anime_list/:user_id', async (req, res) => {
   const { user_id } = req.params
+  const { anime_id } = req.body
   try {
-    const result = await sql`DELETE FROM users_anime_list WHERE user_id = ${user_id} RETURNING *`
+    const result = await sql`DELETE FROM users_anime_list WHERE user_id = ${user_id} and anime_id = ${anime_id} RETURNING *`
     res.json(result)
   } catch (error) {
     console.error(error)
