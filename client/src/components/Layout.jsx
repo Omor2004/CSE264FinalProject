@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 
 import {
   PUBLIC_NAVIGATION_LINKS,
@@ -23,6 +23,10 @@ const Layout = () => {
   const theme = useTheme()
   const isAuthenticated = false
   const animeButtonRef = useRef(null)
+  
+  // this is to determine the current page, because the home page has a slightly change on the padding 
+  const location = useLocation()
+  const isHomePage = location.pathname === '/'
 
   const [anchorElNav, setAnchorElNav] = useState(null)
 
@@ -37,6 +41,18 @@ const Layout = () => {
 
   const handleNavMenuClose = () => {
     setAnchorElNav(null)
+  }
+
+  // change when is HomePage '/' 
+  const containerStyles = {
+    flexGrow: 1,
+    pt: isHomePage ? 0 : 4,
+    pb: isHomePage ? 0 : 8,
+    px: isHomePage ? 0 : 3,
+    
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: isHomePage ? 'center' : 'flex-start',
   }
 
   return (
@@ -105,11 +121,6 @@ const Layout = () => {
             anchorEl={anchorElNav}
             open={Boolean(anchorElNav)}
             onClose={handleNavMenuClose}
-            // slotProps={{
-            //   paper: {
-            //     onMouseLeave: handleNavMenuClose
-            //   }
-            // }}
             disableAutoFocus={false} 
             disableRestoreFocus={false}
             transitionDuration={150}
@@ -151,16 +162,11 @@ const Layout = () => {
           </Toolbar>
         </AppBar>
 
+          {/* when padding is removed */}
         <Container
-          maxWidth='lg'
-          sx={{
-            flexGrow: 1,
-            pt: 4,
-            pb: 8,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-start'
-          }}
+          maxWidth={isHomePage ? false : 'lg'}
+          disableGutters={isHomePage}
+          sx={containerStyles} 
         >
           <Outlet />
         </Container>

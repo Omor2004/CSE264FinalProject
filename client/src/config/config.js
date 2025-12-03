@@ -7,7 +7,6 @@ import { Home as HomeIcon,
 
 import HomePage from   '../pages/HomePage'
 import SearchPage from '../pages/SearchPage'
-import MyListPage from '../pages/MyListPage'
 import AllAnime from '../pages/AnimeCatalog'
 import ProfilePage from '../pages/ProfilePage'
 
@@ -27,7 +26,7 @@ export const ANIME_DROPDOWN_LINKS = [
 
 export const PUBLIC_NAVIGATION_LINKS = [
   {
-    name: 'Anime',
+    name: 'Home',
     path: '/',
     icon: HomeIcon,
     component: HomePage,
@@ -47,13 +46,12 @@ export const AUTH_NAVIGATION_LINKS = [
     icon: ProfileIcon,
     component: ProfilePage,
   },
-  {
-    name: 'My List',
-    path: '/list',
-    icon: Star,
-    component: MyListPage
-
-  }
+  // {
+  //   name: 'My List',
+  //   path: '/list',
+  //   icon: Star,
+  //   component: MyListPage
+  // }
 ]
 
 export const API_BASE_URL = 'https://api.anime.com/v1'
