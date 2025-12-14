@@ -17,6 +17,7 @@ import {
   DialogActions,
   TextField,
 } from '@mui/material'
+import { UserAuth } from '../context/AuthContext'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined'
 import SmallAnimeCard from '../components/pfpAnimeCard'
