@@ -6,9 +6,17 @@ import 'dotenv/config'
 const app = express()  
 // set the port
 app.set('port', 3000)
-app.use(cors())
+
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow cookies/authorization headers
+  optionsSuccessStatus: 204
+}
+app.use(cors(corsOptions))
 
 app.use(express.json())
+// app.use(cors()) 
 
 app.get('/', (req, res) => {
   res.send('API is running')
