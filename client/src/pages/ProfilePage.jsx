@@ -12,6 +12,7 @@ import {
   Divider,
   Paper,
 } from '@mui/material'
+import { UserAuth } from '../context/AuthContext'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined'
 import SmallAnimeCard from '../components/pfpAnimeCard'
@@ -19,6 +20,8 @@ import SmallAnimeCard from '../components/pfpAnimeCard'
 
 const ProfilePage = () => {
   const { id } = useParams()
+  const { session } = UserAuth() 
+  const authenticatedUserId = session?.user?.id //theUUID of the logged-in user
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -28,7 +31,13 @@ const ProfilePage = () => {
   const [listLoading, setListLoading] = useState(true)
 
   useEffect(() => {
-    const routeUserId = id ?? '1'
+    const routeUserId = id || authenticatedUserId
+    //when no ID is found
+    if (!routeUserId) { 
+      setLoading(false)
+      setUser(null)
+      return
+  }
     const controller = new AbortController()
 
     // Load user first
@@ -44,7 +53,7 @@ const ProfilePage = () => {
       .finally(() => setLoading(false))
 
     return () => controller.abort()
-  }, [id])
+  }, [id, authenticatedUserId])
 
   // Load anime list after user is known (uses user.id which is a uuid in your table)
   useEffect(() => {
