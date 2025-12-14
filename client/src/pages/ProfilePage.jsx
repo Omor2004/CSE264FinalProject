@@ -12,6 +12,7 @@ import {
   Divider,
   Paper,
 } from '@mui/material'
+import { UserAuth } from '../context/AuthContext'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined'
 import SmallAnimeCard from '../components/pfpAnimeCard'
@@ -19,7 +20,8 @@ import { UserAuth } from '../context/AuthContext'
 
 const ProfilePage = () => {
   const { id } = useParams()
-  const { session } = UserAuth()
+  const { session } = UserAuth() 
+  const authenticatedUserId = session?.user?.id //theUUID of the logged-in user
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -30,7 +32,13 @@ const ProfilePage = () => {
   const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
-    const routeUserId = id ?? '1'
+    const routeUserId = id || authenticatedUserId
+    //when no ID is found
+    if (!routeUserId) { 
+      setLoading(false)
+      setUser(null)
+      return
+  }
     const controller = new AbortController()
 
     // Load user first
@@ -46,24 +54,7 @@ const ProfilePage = () => {
       .finally(() => setLoading(false))
 
     return () => controller.abort()
-  }, [id])
-
-  useEffect(() => {
-    if (!session?.user?.id) return  // Skip if not logged in
-    const controller = new AbortController()
-
-    fetch(`http://localhost:3000/users/${session.user.id}`, { signal: controller.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load current user')
-        return res.json()
-      })
-      .then((data) => setCurrentUser(data))
-      .catch((err) => {
-        if (err.name !== 'AbortError') console.error('Error loading current user:', err)
-      })
-
-    return () => controller.abort()
-  }, [session?.user?.id])
+  }, [id, authenticatedUserId])
 
   // Load anime list after user is known (uses user.id which is a uuid in your table)
   useEffect(() => {
