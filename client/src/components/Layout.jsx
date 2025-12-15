@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { UserAuth } from '../context/AuthContext'
 
@@ -117,42 +117,6 @@ const Layout = () => {
           </Toolbar>
 
           <Toolbar>
-          <Button 
-            key="Anime"
-            color='inherit' 
-            component={Link} 
-            to='/' 
-            startIcon={<HomeIcon />}
-            ref={animeButtonRef}
-            // HOVER HANDLERS
-            onMouseEnter={handleNavMenuOpen} 
-            aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
-            aria-haspopup="true"
-          >
-            Anime
-          </Button>
-
-          <Menu
-            id="anime-hover-menu"
-            anchorEl={anchorElNav}
-            open={Boolean(anchorElNav)}
-            onClose={handleNavMenuClose}
-            disableAutoFocus={false} 
-            disableRestoreFocus={false}
-            transitionDuration={150}
-          >
-          {ANIME_DROPDOWN_LINKS.map((link) => (
-            <MenuItem 
-              key={link.name} 
-              onClick={handleNavMenuClose} 
-              component={Link} 
-              to={link.path}
-            >
-              {link.name}
-            </MenuItem>
-              ))}
-            </Menu>
-
             <Box sx={{
               display: 'flex',
               flexGrow: 1,

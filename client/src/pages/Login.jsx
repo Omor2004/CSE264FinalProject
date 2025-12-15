@@ -26,7 +26,7 @@ const Login = () => {
     useEffect(() => {
         if(session) {
             console.log('session updated, navigating to home.')
-            navigate('/')
+            navigate('/current-season')
         }
     }, [session, navigate])
 
