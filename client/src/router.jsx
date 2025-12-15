@@ -16,12 +16,13 @@ import NotFound from './pages/NotFound'
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route index element={<HomePage />} />
       <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="anime-catalog" element={<AnimeCatalog />} />
         <Route path="current-season" element={<CurrentSeason />} />
         <Route path="anime/:jikanId/:slug" element={<AnimeDetail />} />
+        {/* <Route path="profile/edit" element={<ProfileEditPage />} /> */}
         <Route path="profile/:id?" element={<ProfilePage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
