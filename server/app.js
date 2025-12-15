@@ -65,13 +65,13 @@ app.post('/users', async (req, res) =>{
 // Update user information in user table
 app.put('/users/:id', async (req, res) => {
   const { id } = req.params
-  const { username, fullname, avatar, bio } = req.body
+  const { username, fullname, avatar, bio, paid, website } = req.body
   try {
     const result = await sql`
       UPDATE users
-      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}, paid = ${paid}
+      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}, paid = ${paid}, website = ${website}
       WHERE id = ${id}
-      RETURNING id, username, fullname, avatar, bio, created_at, paid
+      RETURNING id, username, fullname, avatar, bio, website, created_at, paid
     `
     if (result.length === 0) return res.status(404).json({ error: 'User not found' })
     res.json(result[0])
@@ -121,31 +121,14 @@ app.get('/users_anime_list/:user_id', async (req, res) => {
   }
 })
 
-app.get('/users_anime_list/:user_id/:anime_id', async (req, res) => {
-  const { user_id, anime_id } = req.params
-  try {
-    const list = await sql`
-      SELECT * FROM users_anime_list
-      WHERE user_id = ${user_id} AND anime_id = ${anime_id}
-    `
-    // Return the single entry, or an empty array if not found
-    res.json(list) 
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ error: 'Failed to fetch single anime list entry' })
-  }
-})
-
 // Add to users_anime_list table
 app.post('/users_anime_list/:user_id', async (req, res) => {
   const { user_id } = req.params
-  const { anime_id, status, episodes_watched, user_score, is_favorite } = req.body
-  const favoriteStatus = is_favorite !== undefined ? is_favorite : false;
-
+  const { anime_id, status, episodes_watched, user_score } = req.body
   try {
     const result = await sql`
       INSERT INTO users_anime_list (user_id, anime_id, status, episodes_watched, user_score)
-      VALUES ( ${user_id}, ${anime_id}, ${status}, ${episodes_watched}, ${user_score}, ${favoriteStatus})
+      VALUES ( ${user_id}, ${anime_id}, ${status}, ${episodes_watched}, ${user_score})
       RETURNING *
     `
     res.status(201).json(result[0])
@@ -158,11 +141,11 @@ app.post('/users_anime_list/:user_id', async (req, res) => {
 // Update users_anime_list table
 app.put('/users_anime_list/:user_id', async (req, res) => {
   const { user_id } = req.params
-  const { anime_id, status, user_score, episodes_watched, is_favorite } = req.body
+  const { anime_id, status, user_score, episodes_watched } = req.body
   try {
     const result = await sql`
       UPDATE users_anime_list
-      SET status = ${status}, user_score = ${user_score}, episodes_watched = ${episodes_watched}, is_favorite = ${is_favorite}
+      SET status = ${status}, user_score = ${user_score}, episodes_watched = ${episodes_watched}
       WHERE user_id = ${user_id} and anime_id = ${anime_id}
       RETURNING *
     `
