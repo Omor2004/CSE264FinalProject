@@ -10,27 +10,27 @@ const AppFooter = () => {
   const socialLinks = [
     { 
       icon: <FacebookIcon fontSize="small" />, 
-      url: 'https://www.facebook.com/yourprofile', 
+      url: 'https://www.facebook.com/', 
       label: 'Facebook' 
     },
     { 
       icon: <TwitterIcon fontSize="small" />, 
-      url: 'https://www.twitter.com/yourprofile', 
+      url: 'https://www.twitter.com/', 
       label: 'Twitter/X' 
     },
     { 
       icon: <InstagramIcon fontSize="small" />, 
-      url: 'https://www.instagram.com/yourprofile', 
+      url: 'https://www.instagram.com/', 
       label: 'Instagram' 
     },
     { 
       icon: <LinkedInIcon fontSize="small" />, 
-      url: 'https://www.linkedin.com/in/yourprofile', 
+      url: 'https://www.linkedin.com/', 
       label: 'LinkedIn' 
     },
     { 
       icon: <GitHubIcon fontSize="small" />, 
-      url: 'https://www.github.com/yourrepo', 
+      url: 'https://github.com/Omor2004/CSE264FinalProject', 
       label: 'GitHub' 
     },
   ]
