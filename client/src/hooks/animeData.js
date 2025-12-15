@@ -98,6 +98,22 @@ export const useAnimeData = () => {
     }
   }, [fetchAllPublicAnime])
 
+  const toggleFavorite = async (jikanId, isFavorite) => {
+    if (!isAuthenticated) return { success: false, error: "Authentication required." };
+    
+    const { error } = await supabase
+        .from(USER_LIST_TABLE)
+        .update({ is_favorite: isFavorite })
+        .eq('anime_id', jikanId)
+        .eq('user_id', userId);
+
+    if (error) {
+        console.error("Error toggling favorite: ", error);
+        return { success: false, error: error.message };
+    }
+    return { success: true };
+};
+
 
   const fetchMyList = useCallback(async () => {
     if (!userId) return
@@ -155,7 +171,7 @@ export const useAnimeData = () => {
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           fetchMyList()
-          setListLoading(false)
+          // setListLoading(false)
         }
       })
     
@@ -168,6 +184,7 @@ export const useAnimeData = () => {
 
   const addItemToList = async (item) => {
     if (!isAuthenticated) return { success: false, error: "Authentication required to add items." }
+    
     const { error } = await supabase
       .from(USER_LIST_TABLE)
       .upsert({ 
@@ -179,6 +196,7 @@ export const useAnimeData = () => {
         
         title: item.title,
         picture: item.picture,
+        is_favorite: false,
       })
 
     if (error) {
@@ -213,6 +231,7 @@ export const useAnimeData = () => {
     
     addItemToList,
     removeItemFromList,
+    toggleFavorite,
     
     isItemInList: (jikanId) => !!myList[jikanId],
     isAuthenticated,
