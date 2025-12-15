@@ -3,7 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import Layout from './components/Layout' 
 
 import HomePage from './pages/HomePage'
-import SearchPage from './pages/SearchPage'
+// import SearchPage from './pages/SearchPage'
 import AnimeCatalog from './pages/AnimeCatalog'
 import CurrentSeason from './pages/CurrentSeasonAnime'
 import AnimeDetail from './pages/AnimeDetail'
@@ -18,7 +18,7 @@ export const router = createBrowserRouter(
     <>
       <Route index element={<HomePage />} />
       <Route path="/" element={<Layout />}>
-        <Route path="search" element={<SearchPage />} />
+        {/* <Route path="search" element={<SearchPage />} /> */}
         <Route path="anime-catalog" element={<AnimeCatalog />} />
         <Route path="current-season" element={<CurrentSeason />} />
         <Route path="anime/:jikanId/:slug" element={<AnimeDetail />} />

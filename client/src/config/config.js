@@ -1,42 +1,21 @@
-import { Home as HomeIcon,
-  Search as SearchIcon,
-  Person as ProfileIcon,
-  Star,
-} from '@mui/icons-material'
+import { Person as ProfileIcon, Star } from '@mui/icons-material'
 
-
-import HomePage from   '../pages/HomePage'
-import SearchPage from '../pages/SearchPage'
 import AllAnime from '../pages/AnimeCatalog'
 import ProfilePage from '../pages/ProfilePage'
 
-export const ANIME_DROPDOWN_LINKS = [
+export const PUBLIC_NAVIGATION_LINKS = [
+  {
+    name: 'Current Season',
+    path: '/current-season', 
+    apiEndpoint: 'seasons/now',
+    icon: Star,
+  },
   {
     name: 'Anime Catalog',
     path: '/anime-catalog', 
     apiEndpoint: 'top/anime',
     component: AllAnime,
-  },
-  {
-    name: 'Current Season',
-    path: '/current-season', 
-    apiEndpoint: 'seasons/now',
-  },
-]
-
-export const PUBLIC_NAVIGATION_LINKS = [
-  {
-    name: 'Home',
-    path: '/',
-    icon: HomeIcon,
-    component: HomePage,
-  },
-  {
-    name: 'Search',
-    path: '/search',
-    icon: SearchIcon,
-    component: SearchPage,
-  },
+  }
 ]
 
 export const AUTH_NAVIGATION_LINKS = [
@@ -45,13 +24,7 @@ export const AUTH_NAVIGATION_LINKS = [
     path: '/profile',
     icon: ProfileIcon,
     component: ProfilePage,
-  },
-  // {
-  //   name: 'My List',
-  //   path: '/list',
-  //   icon: Star,
-  //   component: MyListPage
-  // }
+  }
 ]
 
 export const API_BASE_URL = 'https://api.anime.com/v1'

@@ -1,23 +1,22 @@
-import React, { useState,useEffect, useContext, useRef } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
+import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { UserAuth } from '../context/AuthContext'
 
 import {
   PUBLIC_NAVIGATION_LINKS,
-  ANIME_DROPDOWN_LINKS,
+  // ANIME_DROPDOWN_LINKS,
   AUTH_NAVIGATION_LINKS
 } from '../config/config'
 
 import { AppBar, CssBaseline, Toolbar, Typography, Box, Button,
   Container, useTheme, IconButton, Menu, MenuItem, Avatar } from "@mui/material"
 
-import { Home as HomeIcon,
+import {
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon
 } from '@mui/icons-material'
 
 import { ColorModeContext } from '../context/ColorModeContext'
-
 
 const Layout = () => {
   const navigate = useNavigate()
@@ -30,13 +29,9 @@ const Layout = () => {
 
   const [avatarUrl, setAvatarUrl] = useState('')
 
-  const animeButtonRef = useRef(null)
-  
   // this is to determine the current page, because the home page has a slightly change on the padding 
   const location = useLocation()
   const isHomePage = location.pathname === '/'
-
-  const [anchorElNav, setAnchorElNav] = useState(null)
 
   const handleSignOut = async () => {
     await signOut()
@@ -59,19 +54,6 @@ const Layout = () => {
       fetchAvatarUrl()
     }
   }, [isAuthenticated, userId])
-
-  const handleNavMenuOpen = (event) => {
-    if (animeButtonRef.current) {
-      setTimeout(() => {
-        animeButtonRef.current.focus()
-      }, 50)
-    }
-    setAnchorElNav(event.currentTarget)
-  }
-
-  const handleNavMenuClose = () => {
-    setAnchorElNav(null)
-  }
 
   // change when is HomePage '/' 
   const containerStyles = {
@@ -135,47 +117,13 @@ const Layout = () => {
           </Toolbar>
 
           <Toolbar>
-            <Button
-              key="Anime"
-              color='inherit'
-              component={Link}
-              to='/'
-              startIcon={<HomeIcon />}
-              ref={animeButtonRef}
-              onMouseEnter={handleNavMenuOpen}
-              aria-controls={anchorElNav ? 'anime-hover-menu' : undefined}
-              aria-haspopup="true"
-            >
-              Anime
-            </Button>
-
-            <Menu
-              id="anime-hover-menu"
-              anchorEl={anchorElNav}
-              open={Boolean(anchorElNav)}
-              onClose={handleNavMenuClose}
-              disableAutoFocus={false}
-              disableRestoreFocus={false}
-              transitionDuration={150}
-            >
-              {ANIME_DROPDOWN_LINKS.map((link) => (
-                <MenuItem
-                  key={link.name}
-                  onClick={handleNavMenuClose}
-                  component={Link}
-                  to={link.path}
-                >
-                  {link.name}
-                </MenuItem>
-              ))}
-            </Menu>
-
             <Box sx={{
               display: 'flex',
               flexGrow: 1,
-              justifyContent: 'flex-end'
+              justifyContent: 'space-between'
             }}>
-              {PUBLIC_NAVIGATION_LINKS
+              <Box>
+                {PUBLIC_NAVIGATION_LINKS
                 .filter(link => link.name !== 'Anime')
                 .map((link) => (
                   <Button
@@ -188,10 +136,13 @@ const Layout = () => {
                     {link.name}
                   </Button>
                 ))}
+              </Box>
 
-              <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-                {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-              </IconButton>
+              <Box>
+                <IconButton sx={{ ml: 1, display: 'flex', alignSelf: 'flex-end' }} onClick={toggleColorMode} color="inherit">
+                  {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
+              </Box>
             </Box>
           </Toolbar>
         </AppBar>
