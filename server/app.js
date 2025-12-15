@@ -38,7 +38,7 @@ app.get('/users/:id', async (req, res) => {
   const { id } = req.params
   try {
     const rows = await sql`
-      SELECT id, username, fullname, avatar, bio, created_at
+      SELECT id, username, fullname, avatar, bio, created_at, paid
       FROM users
       WHERE id = ${id}
     `
