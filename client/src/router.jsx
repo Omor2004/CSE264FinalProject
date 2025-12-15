@@ -16,8 +16,8 @@ import NotFound from './pages/NotFound'
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route index element={<HomePage />} />
       <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="anime-catalog" element={<AnimeCatalog />} />
         <Route path="current-season" element={<CurrentSeason />} />
