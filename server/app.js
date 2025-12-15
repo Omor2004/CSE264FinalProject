@@ -38,7 +38,7 @@ app.get('/users/:id', async (req, res) => {
   const { id } = req.params
   try {
     const rows = await sql`
-      SELECT id, username, fullname, avatar, bio, created_at
+      SELECT id, username, fullname, avatar, bio, created_at, paid
       FROM users
       WHERE id = ${id}
     `
@@ -69,9 +69,9 @@ app.put('/users/:id', async (req, res) => {
   try {
     const result = await sql`
       UPDATE users
-      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}
+      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}, paid = ${paid}
       WHERE id = ${id}
-      RETURNING id, username, fullname, avatar, bio, created_at
+      RETURNING id, username, fullname, avatar, bio, created_at, paid
     `
     if (result.length === 0) return res.status(404).json({ error: 'User not found' })
     res.json(result[0])
