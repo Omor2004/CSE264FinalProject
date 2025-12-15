@@ -94,8 +94,13 @@ app.put('/users/:id', async (req, res) => {
   try {
     const result = await sql`
       UPDATE users
-      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}, paid = ${paid}, website = ${website}
-      WHERE id = ${id}
+      SET 
+        username = COALESCE(${username}, username), 
+        fullname = COALESCE(${fullname}, fullname), 
+        avatar = COALESCE(${avatar}, avatar), 
+        bio = COALESCE(${bio}, bio), 
+        paid = COALESCE(${paid}, paid), 
+        website = COALESCE(${website}, website)      WHERE id = ${id}
       RETURNING id, username, fullname, avatar, bio, website, created_at, paid
     `
     if (result.length === 0) return res.status(404).json({ error: 'User not found' })
@@ -166,11 +171,15 @@ app.post('/users_anime_list/:user_id', async (req, res) => {
 // Update users_anime_list table
 app.put('/users_anime_list/:user_id', async (req, res) => {
   const { user_id } = req.params
-  const { anime_id, status, user_score, episodes_watched } = req.body
+  const { anime_id, status, user_score, episodes_watched, is_favorite } = req.body 
   try {
     const result = await sql`
       UPDATE users_anime_list
-      SET status = ${status}, user_score = ${user_score}, episodes_watched = ${episodes_watched}
+      SET 
+        status = COALESCE(${status}, status), 
+        user_score = COALESCE(${user_score}, user_score), 
+        episodes_watched = COALESCE(${episodes_watched}, episodes_watched),
+        is_favorite = COALESCE(${is_favorite}, is_favorite) // <-- ADDED THIS LINE
       WHERE user_id = ${user_id} and anime_id = ${anime_id}
       RETURNING *
     `
