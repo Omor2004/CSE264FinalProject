@@ -113,7 +113,7 @@ app.get('/users_anime_list/:user_id', async (req, res) => {
     const list = await sql`
       SELECT * FROM users_anime_list WHERE user_id = ${user_id}
     `
-    if (list.length === 0) return res.status(404).json({ error: 'Not found' })
+    // if (list.length === 0) return res.status(404).json({ error: 'Not found' })
     res.json(list)
   } catch (error) {
     console.error(error)
