@@ -65,13 +65,13 @@ app.post('/users', async (req, res) =>{
 // Update user information in user table
 app.put('/users/:id', async (req, res) => {
   const { id } = req.params
-  const { username, fullname, avatar, bio } = req.body
+  const { username, fullname, avatar, bio, paid, website } = req.body
   try {
     const result = await sql`
       UPDATE users
-      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}
+      SET username = ${username}, fullname = ${fullname}, avatar = ${avatar}, bio = ${bio}, paid = ${paid}, website = ${website}
       WHERE id = ${id}
-      RETURNING id, username, fullname, avatar, bio, created_at
+      RETURNING id, username, fullname, avatar, bio, website, created_at, paid
     `
     if (result.length === 0) return res.status(404).json({ error: 'User not found' })
     res.json(result[0])

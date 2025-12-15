@@ -147,11 +147,16 @@ const Layout = () => {
           </Toolbar>
         </AppBar>
 
-          {/* when padding is removed */}
         <Container
-          maxWidth={isHomePage ? false : 'lg'}
-          disableGutters={isHomePage}
-          sx={containerStyles} 
+          maxWidth='lg'
+          sx={{
+            flexGrow: 1,
+            pt: 4,
+            pb: 8,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-start'
+          }}
         >
           <Outlet />
         </Container>
