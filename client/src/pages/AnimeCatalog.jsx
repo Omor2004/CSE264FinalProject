@@ -124,7 +124,6 @@ const AnimeCatalog = () => {
             const path = `/anime/${anime.jikan_id}/${animeSlug}`
             return (
               <Grid 
-                item 
                 key={anime.jikan_id}
                 size={{xs:'12', sm:'6', md:'4', lg:'3'}}
               >
