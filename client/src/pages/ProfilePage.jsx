@@ -243,15 +243,18 @@ const ProfilePage = () => {
               )}
             </Box>
             <Stack direction="row" spacing={1}>
-              {/* Opens the edit dialog */}
-              <Button
-                size="small"
-                variant="contained"
-                startIcon={<EditOutlinedIcon />}
-                onClick={handleOpenEdit}
-              >
-                Edit profile
-              </Button>
+              {/* Only show to the owner of the profile 
+                Opens the edit profile dialog */}
+              {authenticatedUserId === user?.id && (
+                <Button
+                  size="small"
+                  variant="contained"
+                  startIcon={<EditOutlinedIcon />}
+                  onClick={handleOpenEdit}
+                >
+                  Edit profile
+                </Button>
+              )}
               {/* Website icon shown only if website exists */}
               {p?.website && (
                 <IconButton color="primary" size="small" aria-label="website">
