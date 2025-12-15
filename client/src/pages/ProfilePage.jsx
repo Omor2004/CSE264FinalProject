@@ -42,7 +42,6 @@ const ProfilePage = () => {
     fullname: '',
     username: '',
     bio: '',
-    website: '',
     avatar: '',
   })
   const [saving, setSaving] = useState(false)
@@ -168,7 +167,6 @@ const ProfilePage = () => {
         name: user.fullname || user.username,
         handle: user.username,
         bio: user.bio || '',
-        website: user.website || '',
         avatarUrl: user.avatar || '',
       }
     : null
@@ -180,7 +178,6 @@ const ProfilePage = () => {
         fullname: user.fullname || '',
         username: user.username || '',
         bio: user.bio || '',
-        website: user.website || '',
         avatar: user.avatar || '',
       })
     }
@@ -210,8 +207,8 @@ const ProfilePage = () => {
           fullname: form.fullname,
           username: form.username,
           bio: form.bio,
-          website: form.website,
           avatar: form.avatar,
+          paid: user.paid,
         }),
       })
       if (!res.ok) {
@@ -276,22 +273,9 @@ const ProfilePage = () => {
                     Edit profile
                   </Button>
                 )}
-                {p?.website && (
-                  <IconButton color="primary" size="small" aria-label="website">
-                    <LinkOutlinedIcon />
-                  </IconButton>
-                )}
+                
               </Stack>
             </Stack>
-
-            {!loading && !error && p?.website && (
-              <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mt: 1 }}>
-                <LinkOutlinedIcon fontSize="small" color="action" />
-                <Typography variant="body2" color="text.secondary">
-                  {p.website}
-                </Typography>
-              </Stack>
-            )}
 
             <Divider sx={{ my: 2 }} />
             <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>
@@ -323,13 +307,6 @@ const ProfilePage = () => {
                 fullWidth
               />
               <TextField
-                label="Website"
-                name="website"
-                value={form.website}
-                onChange={handleChange}
-                fullWidth
-              />
-              <TextField
                 label="Avatar URL"
                 name="avatar"
                 value={form.avatar}
@@ -353,7 +330,7 @@ const ProfilePage = () => {
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseEdit} disabled={saving}>Cancel</Button>
+            <Button onClick={handleCloseEdit} variant="contained" color="primary" disabled={saving}>Cancel</Button>
             <Button onClick={handleSave} variant="contained" disabled={saving}>
               {saving ? 'Saving…' : 'Save'}
             </Button>
