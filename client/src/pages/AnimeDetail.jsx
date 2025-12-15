@@ -55,7 +55,7 @@ const AnimeDetail = () => {
     
     // Data payload for the server
     const payload = {
-      user_id: userId,
+      // user_id: userId,
       anime_id: jikanId,
       is_favorite: newFavoriteStatus,
       // If it's a new entry, default status and episodes are needed
@@ -66,7 +66,7 @@ const AnimeDetail = () => {
 
     try {
       // NOTE: You need to create this Express route: POST or PUT /users_anime_list
-      const url = `http://localhost:3000/users_anime_list/user_id`
+      const url = `http://localhost:3000/users_anime_list/${userId}`
       const method = listEntry ? 'PUT' : 'POST'
       
       const response = await fetch(url, {
@@ -79,7 +79,7 @@ const AnimeDetail = () => {
       
       // Update local state based on the action
       setListEntry(prev => ({
-        ...prev,
+        ...(prev || {}),
         ...payload, 
         // Merge payload data (especially the new is_favorite)
         // If it was a POST (new entry), we get all the data back
