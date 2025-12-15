@@ -194,7 +194,7 @@ const AnimeDetail = () => {
                 {isAuthenticated && (
                   <Button 
                     variant={isFavorite ? 'contained' : 'outlined'}
-                    color="error"
+                    color="white"
                     startIcon={isFavorite ? <Favorite /> : <FavoriteBorder />}
                     onClick={handleFavoriteToggle}
                     fullWidth
@@ -209,7 +209,7 @@ const AnimeDetail = () => {
           </Grid>
   
           {/* 2. Details */}
-          <Grid size={{ xs: '12', md: '8'}} >
+          <Grid size={{ xs: '12', md: '8'}} sx={{ maxWidth: '400px', paddingLeft: '1rem' }} >
             <Box sx={{ mb: 3 }} >
               {anime.genres?.map((genre) => (
                 <Chip 
