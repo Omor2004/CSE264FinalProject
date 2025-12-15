@@ -3,6 +3,9 @@ import { UserAuth } from '../context/AuthContext'
 import { fetchJikanData } from '../api/jikanApi'
 import { supabase } from '../supabaseClient'
 
+const CACHE_KEY = 'animeCatalogData'
+const CACHE_TTL = 3600000 //1 hour in milliseconds
+
 const USER_LIST_TABLE = 'users_anime_list' 
 const MAX_PAGES_TO_FETCH = 5 //jikan api let us fetch data by pages, reason why we are setting 5 as a maximum to not lazy load the site
 
@@ -20,6 +23,26 @@ export const useAnimeData = () => {
 
 
   const fetchAllPublicAnime = useCallback(async () => {
+
+    //checking cache first to avoid API call, when is valid and not expired
+    const cachedData = localStorage.getItem(CACHE_KEY)
+    if (cachedData) {
+      try {
+        const { data, timestamp } = JSON.parse(cachedData)
+        if (Date.now() - timestamp < CACHE_TTL) {
+          // Cache is valid: Use cached data and skip API call
+          setPublicAnime(data)
+          setPublicLoading(false)
+          console.log("Loaded public anime catalog from cache.")
+          return
+        }
+      } catch (e) {
+        console.error("Error parsing cached anime data:", e)
+        localStorage.removeItem(CACHE_KEY) // Clear bad cache
+      }
+    }
+
+    //no valid cache, proceed to fetch
     setPublicLoading(true)
     let allAnime = []
     let page = 1
@@ -35,10 +58,10 @@ export const useAnimeData = () => {
           allAnime = allAnime.concat(result.data)
         }
         
-        hasNextPage = result.hasNextPage
+        hasNextPage = result.pagination?.has_next_page ?? false
         page++
 
-        await new Promise(resolve => setTimeout(resolve, 500)) 
+        await new Promise(resolve => setTimeout(resolve, 1500)) 
       }
 
       const mappedData = allAnime
@@ -53,6 +76,12 @@ export const useAnimeData = () => {
       }))
   setPublicAnime(mappedData)
 
+  //catching the newly fetched data
+  localStorage.setItem(
+    CACHE_KEY,
+    JSON.stringify({ data: mappedData, timestamp: Date.now() })
+)
+
     } catch (error) {
       console.error("Error fetching public anime:", error)
     } finally {
@@ -61,16 +90,41 @@ export const useAnimeData = () => {
   }, [])
 
   useEffect(() => {
-    fetchAllPublicAnime()
+    const loadData = async () => {
+      await fetchAllPublicAnime()
+    }
+    loadData()
+    return () => {
+    }
   }, [fetchAllPublicAnime])
+
+  const toggleFavorite = async (jikanId, isFavorite) => {
+    if (!isAuthenticated) return { success: false, error: "Authentication required." };
+    
+    const { error } = await supabase
+        .from(USER_LIST_TABLE)
+        .update({ is_favorite: isFavorite })
+        .eq('anime_id', jikanId)
+        .eq('user_id', userId);
+
+    if (error) {
+        console.error("Error toggling favorite: ", error);
+        return { success: false, error: error.message };
+    }
+    return { success: true };
+};
 
 
   const fetchMyList = useCallback(async () => {
     if (!userId) return
-    // ... (existing Supabase fetch logic for my list)
+
+    setListLoading(true)
+    setListError(null)
+
+    // Supabase fetch logic
     const { data, error } = await supabase
       .from(USER_LIST_TABLE)
-      .select('*')
+      .select('anime_id, status, episodes_watched, user_score, is_favorite')
       .eq('user_id', userId)
 
     if (error) {
@@ -85,6 +139,8 @@ export const useAnimeData = () => {
       setMyList(newMyList)
       setListError(null)
     }
+
+    setListLoading(false)
   }, [userId])
 
   useEffect(() => {
@@ -115,19 +171,20 @@ export const useAnimeData = () => {
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           fetchMyList()
-          setListLoading(false)
+          // setListLoading(false)
         }
       })
     
     return () => {
       channel.unsubscribe()
-      setListLoading(false)
+      // setListLoading(false)
     }
 
   }, [isAuthenticated, userId, authLoading, fetchMyList]) 
 
   const addItemToList = async (item) => {
     if (!isAuthenticated) return { success: false, error: "Authentication required to add items." }
+    
     const { error } = await supabase
       .from(USER_LIST_TABLE)
       .upsert({ 
@@ -139,6 +196,7 @@ export const useAnimeData = () => {
         
         title: item.title,
         picture: item.picture,
+        is_favorite: false,
       })
 
     if (error) {
@@ -173,6 +231,7 @@ export const useAnimeData = () => {
     
     addItemToList,
     removeItemFromList,
+    toggleFavorite,
     
     isItemInList: (jikanId) => !!myList[jikanId],
     isAuthenticated,

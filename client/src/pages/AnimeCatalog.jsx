@@ -16,9 +16,8 @@ const AnimeCatalog = () => {
   const [searchResults, setSearchResults] = useState([])
   const [searchLoading, setSearchLoading] = useState(false)
 
-  // --- Search API Effect ---
   useEffect(() => {
-    // 1. Skip search if the debounced term is empty
+    // Skip search if the debounced term is empty
     if (!debouncedSearchTerm) {
       setSearchResults([])
       return
@@ -75,7 +74,6 @@ const AnimeCatalog = () => {
 
   }, [debouncedSearchTerm]) // Only re-run when the debounced term changes
 
-  // --- Combined Data & Sorting Logic ---
   const finalAnimeList = useMemo(() => {
     // If we have an active search term, use the search results
     const listToDisplay = debouncedSearchTerm ? searchResults : publicAnime
@@ -97,7 +95,7 @@ const AnimeCatalog = () => {
       <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
         <CircularProgress />
         <Typography sx={{ ml: 2, color: 'text.secondary' }}>
-            {searchLoading ? "Searching the Jikan database..." : "Loading public catalog..."}
+          {searchLoading ? "Searching the Jikan database..." : "Loading public catalog..."}
         </Typography>
       </Box>
     )
@@ -126,12 +124,8 @@ const AnimeCatalog = () => {
             const path = `/anime/${anime.jikan_id}/${animeSlug}`
             return (
               <Grid 
-                item 
-                key={anime.jikan_id} 
-                xs={12} 
-                sm={6} 
-                md={4} 
-                lg={3}
+                key={anime.jikan_id}
+                size={{xs:'12', sm:'6', md:'4', lg:'3'}}
               >
                 <Typography 
                   variant="subtitle1" 
@@ -158,11 +152,11 @@ const AnimeCatalog = () => {
       
       {/* Show the public catalog count only if no search is active */}
       {!debouncedSearchTerm && publicAnime.length > 0 && (
-          <Box sx={{ mt: 4, textAlign: 'center' }}>
-              <Typography variant="body2" color="text.secondary">
-                  Showing {publicAnime.length} items from your catalog.
-              </Typography>
-          </Box>
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Typography variant="body2" color="text.secondary">
+            Showing {publicAnime.length} items from your catalog.
+          </Typography>
+        </Box>
       )}
     </Container>
   )
