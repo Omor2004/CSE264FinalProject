@@ -17,7 +17,6 @@ import {
   DialogActions,
   TextField,
 } from '@mui/material'
-import { UserAuth } from '../context/AuthContext'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined'
 import SmallAnimeCard from '../components/pfpAnimeCard'
@@ -55,12 +54,11 @@ const ProfilePage = () => {
   // Fetch the user to display
   useEffect(() => {
     const routeUserId = id || authenticatedUserId
-    //when no ID is found
-    if (!routeUserId) { 
+    if (!routeUserId) {
       setLoading(false)
       setUser(null)
       return
-  }
+    }
     const controller = new AbortController()
 
     fetch(`http://localhost:3000/users/${routeUserId}`, { signal: controller.signal })
