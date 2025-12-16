@@ -47,7 +47,7 @@ This project is built using a custom **React/Express/PostgreSQL stack** and util
 
 1.  **Clone the repository:**
     ```bash
-    git clone [Your Repository URL]
+    git clone (https://github.com/Omor2004/CSE264FinalProject.git)
     cd anime-catalog-project
     ```
 2.  **Navigate to the `server` directory:**
